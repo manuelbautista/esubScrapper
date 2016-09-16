@@ -16,5 +16,5 @@ namespace Dax.Scrapping.Appraisal
     {
         public int aoi_id { get; set; }
         public string aoi_value { get; set; }
-    }
+    } 
 }
