@@ -74,8 +74,11 @@ namespace Dax.Scrapping.Appraisal
 
     private void ATimer_Elapsed(object sender, ElapsedEventArgs e)
     {
-      Application.Restart();
-    }
+        this._scraper._curStatus = Status.Searching;
+        this._scraper.LoadWeb(this._scraper._newAgentsInfoSite);
+        //this._brouserComponent.Load(this._newAgentsInfoSite);
+        //Application.Restart();
+        }
 
     private void InitializeBrouser()
     {

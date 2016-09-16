@@ -32,9 +32,9 @@ namespace Dax.Scrapping.Appraisal.Core
   public class AppraisalScrapper : ScrapperBase, IDisposable
   {
     private Action _curAction = (Action) null;
-    private Status _curStatus = Status.Paused;
+    public Status _curStatus = Status.Paused;
     private string _loginUrl = "https://x5adminw.ytel.com/Account/login";
-    private string _newAgentsInfoSite = "https://x5adminw.ytel.com/AgentPerformance/estomescustom";
+    public string _newAgentsInfoSite = "https://x5adminw.ytel.com/AgentPerformance/estomescustom";
     private string _user;
     private string _pass;
     private bool isLogged { get; set; }
@@ -65,6 +65,11 @@ namespace Dax.Scrapping.Appraisal.Core
       this.OnLog(msg);
     }
 
+    public void LoadWeb(string address)
+    {
+      this._brouserComponent.Load(address);
+          
+    }
     private void _brouserComponent_LoadingStateChanged(object sender, LoadingStateChangedEventArgs e)
     {
       if (e.IsLoading)
