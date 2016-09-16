@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="2e85e3cdf3fc48509470c7167a103358" Name="Diagram1">
+        <EntityTypeShape EntityType="SchoolModel.AgentsInfo" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.AgentsMPT" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.AOL_LIST" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.aspnet_Applications" Width="1.5" PointX="0.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.aspnet_Membership" Width="1.5" PointX="6" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.aspnet_Paths" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.aspnet_PersonalizationAllUsers" Width="1.5" PointX="5.25" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.aspnet_PersonalizationPerUser" Width="1.5" PointX="5.25" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.aspnet_Profile" Width="1.5" PointX="10.5" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.aspnet_Roles" Width="1.5" PointX="3" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.aspnet_SchemaVersions" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.aspnet_Users" Width="1.5" PointX="8.25" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.aspnet_WebEvent_Events" Width="1.5" PointX="7.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.choice_map" Width="1.5" PointX="2.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.Company_Name" Width="1.5" PointX="9.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.Degree_Of_Interest" Width="1.5" PointX="9.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.ErrorReport" Width="1.5" PointX="12.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.EsubMapping" Width="1.5" PointX="7.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.EsubMappingValue" Width="1.5" PointX="10" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.gvd_data" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.gvd_post_info" Width="1.5" PointX="14.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.gvd_routing" Width="1.5" PointX="5.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.ImportHistory" Width="1.5" PointX="0.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.logFile" Width="1.5" PointX="7.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.Master_Map" Width="1.5" PointX="9.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.myfootpathaffiliate" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.myfootpathaffiliates_back" Width="1.5" PointX="16.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.post_info" Width="1.5" PointX="11.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.ProgramsCrossRef" Width="1.5" PointX="18.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.QuinStreet" Width="1.5" PointX="18.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.Routing" Width="1.5" PointX="18.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.ScheduledTask" Width="1.5" PointX="13.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.School_Detail" Width="1.5" PointX="18.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.school_map" Width="1.5" PointX="15.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.School_OverrideInputs" Width="1.5" PointX="17.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.School_Status" Width="1.5" PointX="0.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.Schools_Submitteds" Width="1.5" PointX="2.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.submit_record" Width="1.5" PointX="4.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.T_CLIENT" Width="1.5" PointX="6.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.Temp_myfootpathaffiliates" Width="1.5" PointX="8.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.Temp_post_info" Width="1.5" PointX="19.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.user" Width="1.5" PointX="20.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.UsersHistory" Width="1.5" PointX="20.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.vicidial_list" Width="1.5" PointX="21.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.EdSoup" Width="1.5" PointX="21.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.EdSoupProfileLead" Width="1.5" PointX="22.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.EventLog" Width="1.5" PointX="22.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.FSO_DATA" Width="1.5" PointX="13.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.gvd_data_back_12_5_2015" Width="1.5" PointX="15.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.gvd_post_info_back_12_5_2015" Width="1.5" PointX="23.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.HEG" Width="1.5" PointX="23.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.MediaSpike" Width="1.5" PointX="23.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.mfp_back" Width="1.5" PointX="24.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.mfp_record" Width="1.5" PointX="10.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.tblZip" Width="1.5" PointX="25.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.Version_History" Width="1.5" PointX="25.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.vicidial_list_back" Width="1.5" PointX="25.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.View_Agents" Width="1.5" PointX="25.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.vw_aspnet_Applications" Width="1.5" PointX="26.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.vw_aspnet_MembershipUsers" Width="1.5" PointX="12.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.vw_aspnet_Profiles" Width="1.5" PointX="26.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.vw_aspnet_Roles" Width="1.5" PointX="25.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.vw_aspnet_Users" Width="1.5" PointX="27.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.vw_aspnet_UsersInRoles" Width="1.5" PointX="27.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.vw_aspnet_WebPartState_Paths" Width="1.5" PointX="27.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.vw_aspnet_WebPartState_Shared" Width="1.5" PointX="27.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.vw_aspnet_WebPartState_User" Width="1.5" PointX="27.75" PointY="19.75" IsExpanded="true" />
+        <AssociationConnector Association="SchoolModel.FK__aspnet_Me__Appli__1411F17C" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK__aspnet_Pa__Appli__45A94D10" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK__aspnet_Ro__Appli__3296789C" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK__aspnet_Us__Appli__03DB89B3" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK__aspnet_Me__UserI__150615B5" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK__aspnet_Pe__PathI__4B622666" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK__aspnet_Pe__PathI__4F32B74A" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK__aspnet_Pe__UserI__5026DB83" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK__aspnet_Pr__UserI__290D0E62" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK_EsubMappingValues_EsubMapping" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.aspnet_UsersInRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SchoolModel.AgentPerformanceInfo" Width="1.5" PointX="22.375" PointY="27.75" />
+        <EntityTypeShape EntityType="SchoolModel.AgentTimestamp" Width="1.5" PointX="0.75" PointY="28.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

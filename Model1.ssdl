@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ScrapingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="AgentsInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="USER" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="UserID" Type="int" />
+    <Property Name="USERGROUP" Type="nvarchar" MaxLength="250" />
+    <Property Name="CALLS" Type="nvarchar" MaxLength="250" />
+    <Property Name="TIME" Type="nvarchar" MaxLength="250" />
+    <Property Name="PAUSE" Type="nvarchar" MaxLength="250" />
+    <Property Name="PAUSEAVG" Type="nvarchar" MaxLength="250" />
+    <Property Name="WAIT" Type="nvarchar" MaxLength="250" />
+    <Property Name="WAITAVG" Type="nvarchar" MaxLength="250" />
+    <Property Name="TALK" Type="nvarchar" MaxLength="250" />
+    <Property Name="TALKAVG" Type="nvarchar" MaxLength="250" />
+    <Property Name="DISPO" Type="nvarchar" MaxLength="250" />
+    <Property Name="DISPOAVG" Type="nvarchar" MaxLength="250" />
+    <Property Name="DEAD" Type="nvarchar" MaxLength="250" />
+    <Property Name="DEADAVG" Type="nvarchar" MaxLength="250" />
+    <Property Name="CUST" Type="nvarchar" MaxLength="250" />
+    <Property Name="CUSTAVG" Type="nvarchar" MaxLength="250" />
+    <Property Name="X1" Type="nvarchar" MaxLength="250" />
+    <Property Name="NORSPN" Type="nvarchar" MaxLength="250" />
+    <Property Name="N" Type="nvarchar" MaxLength="250" />
+    <Property Name="NRN" Type="nvarchar" MaxLength="250" />
+    <Property Name="DNQ" Type="nvarchar" MaxLength="250" />
+    <Property Name="INSCH" Type="nvarchar" MaxLength="250" />
+    <Property Name="NOSCH" Type="nvarchar" MaxLength="250" />
+    <Property Name="B" Type="nvarchar" MaxLength="250" />
+    <Property Name="WRONG" Type="nvarchar" MaxLength="250" />
+    <Property Name="CBHOLD" Type="nvarchar" MaxLength="250" />
+    <Property Name="DNC" Type="nvarchar" MaxLength="250" />
+    <Property Name="A" Type="nvarchar" MaxLength="250" />
+    <Property Name="XHT" Type="nvarchar" MaxLength="250" />
+    <Property Name="HS" Type="nvarchar" MaxLength="250" />
+    <Property Name="HU" Type="nvarchar" MaxLength="250" />
+    <Property Name="X2" Type="nvarchar" MaxLength="250" />
+    <Property Name="CBL" Type="nvarchar" MaxLength="250" />
+    <Property Name="NI" Type="nvarchar" MaxLength="250" />
+    <Property Name="X3" Type="nvarchar" MaxLength="250" />
+    <Property Name="X4" Type="nvarchar" MaxLength="50" />
+    <Property Name="JOB" Type="nvarchar" MaxLength="250" />
+    <Property Name="XFER" Type="nvarchar" MaxLength="250" />
+    <Property Name="NOT18" Type="nvarchar" MaxLength="250" />
+    <Property Name="Date" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityContainer Name="ScrapingModelStoreContainer">
+    <EntitySet Name="AgentsInfo" EntityType="Self.AgentsInfo" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

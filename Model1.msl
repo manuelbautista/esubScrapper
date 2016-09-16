@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ScrapingModelStoreContainer" CdmEntityContainer="ScrapingEntities">
+    <EntitySetMapping Name="AgentsInfoes">
+      <EntityTypeMapping TypeName="ScrapingModel.AgentsInfo">
+        <MappingFragment StoreEntitySet="AgentsInfo">
+          <ScalarProperty Name="X4" ColumnName="X4" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="NOT18" ColumnName="NOT18" />
+          <ScalarProperty Name="XFER" ColumnName="XFER" />
+          <ScalarProperty Name="JOB" ColumnName="JOB" />
+          <ScalarProperty Name="X3" ColumnName="X3" />
+          <ScalarProperty Name="NI" ColumnName="NI" />
+          <ScalarProperty Name="CBL" ColumnName="CBL" />
+          <ScalarProperty Name="X2" ColumnName="X2" />
+          <ScalarProperty Name="HU" ColumnName="HU" />
+          <ScalarProperty Name="HS" ColumnName="HS" />
+          <ScalarProperty Name="XHT" ColumnName="XHT" />
+          <ScalarProperty Name="A" ColumnName="A" />
+          <ScalarProperty Name="DNC" ColumnName="DNC" />
+          <ScalarProperty Name="CBHOLD" ColumnName="CBHOLD" />
+          <ScalarProperty Name="WRONG" ColumnName="WRONG" />
+          <ScalarProperty Name="B" ColumnName="B" />
+          <ScalarProperty Name="NOSCH" ColumnName="NOSCH" />
+          <ScalarProperty Name="INSCH" ColumnName="INSCH" />
+          <ScalarProperty Name="DNQ" ColumnName="DNQ" />
+          <ScalarProperty Name="NRN" ColumnName="NRN" />
+          <ScalarProperty Name="N" ColumnName="N" />
+          <ScalarProperty Name="NORSPN" ColumnName="NORSPN" />
+          <ScalarProperty Name="X1" ColumnName="X1" />
+          <ScalarProperty Name="CUSTAVG" ColumnName="CUSTAVG" />
+          <ScalarProperty Name="CUST" ColumnName="CUST" />
+          <ScalarProperty Name="DEADAVG" ColumnName="DEADAVG" />
+          <ScalarProperty Name="DEAD" ColumnName="DEAD" />
+          <ScalarProperty Name="DISPOAVG" ColumnName="DISPOAVG" />
+          <ScalarProperty Name="DISPO" ColumnName="DISPO" />
+          <ScalarProperty Name="TALKAVG" ColumnName="TALKAVG" />
+          <ScalarProperty Name="TALK" ColumnName="TALK" />
+          <ScalarProperty Name="WAITAVG" ColumnName="WAITAVG" />
+          <ScalarProperty Name="WAIT" ColumnName="WAIT" />
+          <ScalarProperty Name="PAUSEAVG" ColumnName="PAUSEAVG" />
+          <ScalarProperty Name="PAUSE" ColumnName="PAUSE" />
+          <ScalarProperty Name="TIME" ColumnName="TIME" />
+          <ScalarProperty Name="CALLS" ColumnName="CALLS" />
+          <ScalarProperty Name="USERGROUP" ColumnName="USERGROUP" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="USER" ColumnName="USER" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

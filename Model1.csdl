@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ScrapingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="ScrapingEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AgentsInfoes" EntityType="ScrapingModel.AgentsInfo" />
+  </EntityContainer>
+  <EntityType Name="AgentsInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="USER" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserID" Type="Int32" />
+    <Property Name="USERGROUP" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="CALLS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="TIME" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="PAUSE" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="PAUSEAVG" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="WAIT" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="WAITAVG" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="TALK" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="TALKAVG" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="DISPO" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="DISPOAVG" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="DEAD" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="DEADAVG" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="CUST" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="CUSTAVG" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="X1" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="NORSPN" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="N" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="NRN" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="DNQ" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="INSCH" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="NOSCH" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="B" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="WRONG" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="CBHOLD" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="DNC" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="A" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="XHT" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="HS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="HU" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="X2" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="CBL" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="NI" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="X3" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="JOB" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="XFER" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="NOT18" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="X4" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+</Schema>
