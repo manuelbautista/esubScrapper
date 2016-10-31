@@ -164,6 +164,7 @@ namespace Dax.Scrapping.Appraisal.Core
             agentsInfo.XFER = this.GetColumnValue(listInfo, agent, "XFER");
             agentsInfo.NOT18 = this.GetColumnValue(listInfo, agent, "NOT18");
             agentsInfo.Date = DateTime.Now.ToShortDateString();
+            agentsInfo.XUbr = this.GetColumnValue(listInfo, agent, "XUBR");
             agentsInfoList.Add(agentsInfo);
           }
           ++num;
@@ -222,6 +223,55 @@ namespace Dax.Scrapping.Appraisal.Core
             var newTime = string.Format("{0}:{1}:{2}", time.Hour, time.Minute, time.Second);
             return newTime;
         }
+
+      private TimeSpan ParseTime(string time)
+      {
+            try
+            {
+                if (string.IsNullOrEmpty(time))
+                    time = "0:00:00";
+
+                var splitHours = time.Split(':');
+
+                int secondsTime = 0, minutesTime = 0, hoursTime = 0;
+
+                bool talk = false, wait = false, dead = false;
+
+                int.TryParse(splitHours[0], out hoursTime);
+                int.TryParse(splitHours[1], out minutesTime);
+                int.TryParse(splitHours[2], out secondsTime);
+
+                if (secondsTime >= 60)
+                {
+                    minutesTime = minutesTime + 1;
+                    secondsTime = 0;
+                    talk = true;
+                }
+                if (minutesTime >= 60)
+                {
+                    hoursTime = hoursTime + 1;
+                    minutesTime = 0;
+                    talk = true;
+                }
+
+                TimeSpan Time;
+                if (talk)
+                {
+                    var talkString = hoursTime.ToString() + ":" + minutesTime.ToString() + ":" + secondsTime.ToString();
+                    Time = TimeSpan.Parse(talkString);
+                }
+                else
+                {
+                    Time = TimeSpan.Parse(time);
+                }
+                return Time;
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return new TimeSpan();
+        }
         private double ConvertToTimeToDouble(string time)
         {
             try
@@ -278,73 +328,75 @@ namespace Dax.Scrapping.Appraisal.Core
 
       private string GetActualRank(double lph, List<AgentsInfoExtended> listAgents, string timeUtilization)
       {
-            var percent = timeUtilization.Replace("%", "");
-            double percentConverted = 0.0;
-            Double.TryParse(percent, out percentConverted);
+          try
+          {
+              var percent = timeUtilization.Replace("%", "");
+              double percentConverted = 0.0;
+              Double.TryParse(percent, out percentConverted);
 
-            var ListRanks = new List<Rank>();
-            var rank1 = new Rank
-            {
-                LPH = 999.9,
-                UserId = 999,
-                Username = "AgentRank1"
-            };
-            var rank2 = new Rank
-            {
-                LPH = 999.8,
-                UserId = 998,
-                Username = "AgentRank2"
-            };
-            ListRanks.Add(rank1);
-            ListRanks.Add(rank2);
+              var ListRanks = new List<Rank>();
+              var rank1 = new Rank
+              {
+                  LPH = 999.9,
+                  UserId = 999,
+                  Username = "AgentRank1"
+              };
+              var rank2 = new Rank
+              {
+                  LPH = 999.8,
+                  UserId = 998,
+                  Username = "AgentRank2"
+              };
+              ListRanks.Add(rank1);
+              ListRanks.Add(rank2);
 
-            if (lph <= 1.7)
+              if (lph <= 1.7)
               {
                   return "Not Ranked";
               }
 
-            foreach (var agent in listAgents)
+              foreach (var agent in listAgents)
               {
                   var service = new AgentsPerformanceService();
                   Rank rank = new Rank();
                   rank.LPH = agent.LPH;
                   rank.UserId = agent.Id;
                   rank.Username = agent.USER;
-                //Time Utilization
-                var waitTime = TimeSpan.Parse(agent.WAIT);
-                var talkTime = TimeSpan.Parse(agent.TALK);
-                var deadTime = TimeSpan.Parse(agent.DEAD);
-                var workingTime = (waitTime + talkTime + deadTime);
-                var breakTime = TimeSpan.Parse("00:45:00");
-                var totalBreakTime = new TimeSpan();
-                var timeNow = ConvertTimeToString(DateTime.Now);
-                var userTimeStamp = service.GetTodayTimeStamp(agent.USER, DateTime.Now);
-                var agentsLoginTime = ConvertTimeToString(userTimeStamp.Value);
+                  //Time Utilization
+                  var waitTime = ParseTime(agent.WAIT);
+                  var talkTime = ParseTime(agent.TALK);
+                  var deadTime = ParseTime(agent.DEAD);
+                  var workingTime = (waitTime + talkTime + deadTime);
+                  var breakTime = TimeSpan.Parse("00:45:00");
+                  var totalBreakTime = new TimeSpan();
+                  var timeNow = ConvertTimeToString(DateTime.Now);
+                  var userTimeStamp = service.GetTodayTimeStamp(agent.USER, DateTime.Now);
+                  var agentsLoginTime = ConvertTimeToString(userTimeStamp.Value);
 
-                var potentialWorkingHour = ConvertToTimeToDouble(timeNow) - ConvertToTimeToDouble(agentsLoginTime);
-                //AgentPerformanceInfo agentPerformance = new AgentPerformanceInfo();
-                //Calculate Break Time
-                if (workingTime.Hours < 4)
-                {
-                    var substract = TimeSpan.Parse("00:35:00");
-                    totalBreakTime = breakTime - substract;
-                }
-                else if (workingTime.Hours >= 4 && workingTime.Hours < 6)
-                {
-                    var substract = TimeSpan.Parse("00:20:00");
-                    totalBreakTime = breakTime - substract;
-                }
-                else
-                {
-                    totalBreakTime = breakTime;
-                }
-                var timeUti = Math.Round(
-                ((ConvertToTimeToDouble(workingTime.ToString()) +
-                  ConvertToTimeToDouble(totalBreakTime.ToString())) / potentialWorkingHour), 2);
+                  var potentialWorkingHour = ConvertToTimeToDouble(timeNow) - ConvertToTimeToDouble(agentsLoginTime);
+                  //AgentPerformanceInfo agentPerformance = new AgentPerformanceInfo();
+                  //Calculate Break Time
+                  if (workingTime.Hours < 4)
+                  {
+                      var substract = TimeSpan.Parse("00:35:00");
+                      totalBreakTime = breakTime - substract;
+                  }
+                  else if (workingTime.Hours >= 4 && workingTime.Hours < 6)
+                  {
+                      var substract = TimeSpan.Parse("00:20:00");
+                      totalBreakTime = breakTime - substract;
+                  }
+                  else
+                  {
+                      totalBreakTime = breakTime;
+                  }
+                  var timeUti = Math.Round(
+                  ((ConvertToTimeToDouble(workingTime.ToString()) +
+                    ConvertToTimeToDouble(totalBreakTime.ToString()))/potentialWorkingHour), 2);
 
-                rank.TimeUtilization = timeUti* 100;
-                //
-                ListRanks.Add(rank);
+                  rank.TimeUtilization = timeUti*100;
+                  //
+                  ListRanks.Add(rank);
               }
 
               var newList = ListRanks.OrderByDescending(a => a.LPH).ToList();
@@ -352,24 +404,29 @@ namespace Dax.Scrapping.Appraisal.Core
               {
                   if (newList[i].LPH.Equals(lph))
                   {
-                      if (i == 2 && percentConverted >=90 )
+                      if (i == 2 && percentConverted >= 90)
                       {
-                         return "1";
+                          return "1";
                       }
-                      if (i == 3 && newList[2].TimeUtilization < 90 && newList[3].TimeUtilization >=90)
+                      if (i == 3 && newList[2].TimeUtilization < 90 && newList[3].TimeUtilization >= 90)
                       {
-                         return "1";
+                          return "1";
                       }
                       if (i == 3 && percentConverted >= 90)
                       {
-                         return "2";
+                          return "2";
                       }
 
                       return (i + 1).ToString();
                   }
               }
-          //    scope.Complete();
-          //}
+              //    scope.Complete();
+              //}
+          }
+          catch (Exception ex)
+          {
+              MessageBox.Show(ex.Message);
+          }
           return "Not Ranked";
       }
         private void SetEstatics(string agentName, int? userId, List<AgentsInfoExtended> listAgents)
@@ -380,6 +437,8 @@ namespace Dax.Scrapping.Appraisal.Core
             {
                     var service = new AgentsPerformanceService();
                     var userData = listAgents.FirstOrDefault(a => a.Id.Equals(userId));
+                    if (userData == null)
+                        return;
                     var workingHours = service.GetHours(userData);
 
                     var userTimeStamp = service.GetTodayTimeStamp(agentName, DateTime.Now);
@@ -387,10 +446,10 @@ namespace Dax.Scrapping.Appraisal.Core
                     //Return if null
                     if (userData == null) return;
 
-                    var waitTime = TimeSpan.Parse(userData.WAIT);
-                    var talkTime = TimeSpan.Parse(userData.TALK);
-                    var deadTime = TimeSpan.Parse(userData.DEAD);
-                    var workingTime = (waitTime + talkTime + deadTime);
+                    var waitTime = ParseTime(userData.WAIT);
+                    var talkTime = ParseTime(userData.TALK);
+                    var deadTime = ParseTime(userData.DEAD);
+                    var workingTime = (waitTime + talkTime - deadTime);
                     var breakTime = TimeSpan.Parse("00:45:00");
                     var totalBreakTime = new TimeSpan();
                     var timeNow = ConvertTimeToString(DateTime.Now);
@@ -398,6 +457,9 @@ namespace Dax.Scrapping.Appraisal.Core
 
                     var potentialWorkingHour = ConvertToTimeToDouble(timeNow) - ConvertToTimeToDouble(agentsLoginTime);
                     AgentPerformanceInfo agentPerformance = new AgentPerformanceInfo();
+                    //if potential working hour > 8 then is going to be 8 
+                    if (potentialWorkingHour > 8)
+                        potentialWorkingHour = 8;
 
                     //Working time
                     agentPerformance.EstWorkingTime = Math.Round(workingHours, 2).ToString();
@@ -434,6 +496,8 @@ namespace Dax.Scrapping.Appraisal.Core
                         ? Math.Round(userData.LPH, 2).ToString()
                         : (userData.LPH*timeUti).ToString();
 
+                    agentPerformance.AdjustedLPH = timeUti > 0.9 ? Math.Round(userData.LPH, 2).ToString(): (userData.LPH * timeUti).ToString();
+                    agentPerformance.EstPaidTime = (workingTime + totalBreakTime + ParseTime(userData.MPT)).ToString();
                     agentPerformance.TotalNoXFER = userData.XFER;
                     //Total Leads
                     var x1 = 0;
@@ -469,6 +533,9 @@ namespace Dax.Scrapping.Appraisal.Core
                         agent.UserID = userId.Value;
                         agent.UserName = agentName;
 
+                        agent.AdjustedLPH = agentPerformance.AdjustedLPH;
+                        agent.EstPaidTime = agentPerformance.EstPaidTime;
+
                     }
                     else
                     {
@@ -483,6 +550,9 @@ namespace Dax.Scrapping.Appraisal.Core
                         agent.TotalProjectedLead = agentPerformance.TotalProjectedLead;
                         agent.UserID = userId.Value;
                         agent.UserName = agentName;
+
+                        agent.AdjustedLPH = agentPerformance.AdjustedLPH;
+                        agent.EstPaidTime = agentPerformance.EstPaidTime;
                     }
 
                     scrapingEntities.AgentPerformanceInfoes.AddOrUpdate(agent);
@@ -494,7 +564,7 @@ namespace Dax.Scrapping.Appraisal.Core
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
             }
 
         }
@@ -536,7 +606,7 @@ namespace Dax.Scrapping.Appraisal.Core
           }
           catch (Exception ex)
           {
-              //MessageBox.Show(ex.StackTrace);
+              MessageBox.Show(ex.StackTrace);
           }
       }
     private void SaveAgentsToDataBase(List<AgentsInfo> listAgent)

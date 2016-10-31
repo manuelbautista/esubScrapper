@@ -20,6 +20,8 @@
           <Property Name="TotalNoXFER" Type="nvarchar" MaxLength="50" />
           <Property Name="TotalProjectedLead" Type="nvarchar" MaxLength="50" />
           <Property Name="Date" Type="nvarchar" MaxLength="50" />
+          <Property Name="AdjustedLPH" Type="nvarchar" MaxLength="50" />
+          <Property Name="EstPaidTime" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="AgentsInfo">
           <Key>
@@ -67,6 +69,7 @@
           <Property Name="XFER" Type="nvarchar" MaxLength="250" />
           <Property Name="NOT18" Type="nvarchar" MaxLength="250" />
           <Property Name="Date" Type="nvarchar" MaxLength="50" />
+          <Property Name="XUbr" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="AgentsMPT">
           <Key>
@@ -2963,6 +2966,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <Property Name="XFER" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="NOT18" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="XUbr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="AgentsMPT">
           <Key>
@@ -5765,6 +5769,8 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <Property Name="TotalNoXFER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TotalProjectedLead" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AdjustedLPH" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EstPaidTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="AgentTimestamp">
           <Key>
@@ -5784,6 +5790,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <EntitySetMapping Name="AgentsInfoes">
             <EntityTypeMapping TypeName="SchoolModel.AgentsInfo">
               <MappingFragment StoreEntitySet="AgentsInfo">
+                <ScalarProperty Name="XUbr" ColumnName="XUbr" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="USER" ColumnName="USER" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -7800,6 +7807,8 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <EntitySetMapping Name="AgentPerformanceInfoes">
             <EntityTypeMapping TypeName="SchoolModel.AgentPerformanceInfo">
               <MappingFragment StoreEntitySet="AgentPerformanceInfo">
+                <ScalarProperty Name="EstPaidTime" ColumnName="EstPaidTime" />
+                <ScalarProperty Name="AdjustedLPH" ColumnName="AdjustedLPH" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="TotalProjectedLead" ColumnName="TotalProjectedLead" />
                 <ScalarProperty Name="TotalNoXFER" ColumnName="TotalNoXFER" />

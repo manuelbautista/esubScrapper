@@ -25,5 +25,7 @@ namespace Dax.Scrapping.Appraisal
         public string TotalNoXFER { get; set; }
         public string TotalProjectedLead { get; set; }
         public string Date { get; set; }
+        public string AdjustedLPH { get; set; }
+        public string EstPaidTime { get; set; }
     }
 }

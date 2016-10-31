@@ -56,6 +56,6 @@ namespace Dax.Scrapping.Appraisal
         public string XFER { get; set; }
         public string NOT18 { get; set; }
         public string Date { get; set; }
-        public double LPH { get; set; }
+        public string XUbr { get; set; }
     }
 }
