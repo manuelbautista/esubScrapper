@@ -21,5 +21,6 @@ namespace Dax.Scrapping.Appraisal
         public string SchoolName { get; set; }
         public int SchoolStatusId { get; set; }
         public Nullable<int> SubmitId { get; set; }
+        public string Program { get; set; }
     }
 }

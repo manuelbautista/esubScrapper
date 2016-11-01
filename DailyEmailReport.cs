@@ -12,10 +12,13 @@ namespace Dax.Scrapping.Appraisal
     using System;
     using System.Collections.Generic;
     
-    public partial class View_Agents
+    public partial class DailyEmailReport
     {
-        public string USER { get; set; }
-        public Nullable<int> UserID { get; set; }
-        public Nullable<bool> IsActive { get; set; }
+        public int Id { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
+        public Nullable<bool> Sent { get; set; }
+        public string ReportName { get; set; }
+        public string Time { get; set; }
+        public string Path { get; set; }
     }
 }

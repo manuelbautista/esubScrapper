@@ -245,6 +245,17 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="DailyEmailReport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="date" />
+          <Property Name="Sent" Type="bit" />
+          <Property Name="ReportName" Type="nvarchar" MaxLength="250" />
+          <Property Name="Time" Type="varchar" MaxLength="250" />
+          <Property Name="Path" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="Degree_Of_Interest">
           <Key>
             <PropertyRef Name="doi_id" />
@@ -876,6 +887,7 @@ warning 6002: The table/view 'School.dbo.mfp_record' does not have a primary key
           <Property Name="SchoolName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="SchoolStatusId" Type="int" Nullable="false" />
           <Property Name="SubmitId" Type="int" />
+          <Property Name="Program" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="school_map">
           <Key>
@@ -1183,6 +1195,7 @@ warning 6002: The table/view 'School.dbo.tblZips' does not have a primary key de
           <Property Name="MSEAccess" Type="varchar" MaxLength="1" />
           <Property Name="MCMAcess" Type="varchar" MaxLength="1" />
           <Property Name="IsActive" Type="bit" />
+          <Property Name="Lockout" Type="bit" />
         </EntityType>
         <EntityType Name="UsersHistory">
           <Key>
@@ -1299,6 +1312,7 @@ warning 6002: The table/view 'School.dbo.View_Agents' does not have a primary ke
           </Key>
           <Property Name="USER" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="UserID" Type="int" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'School.dbo.vw_aspnet_Applications' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2273,6 +2287,7 @@ warning 6002: The table/view 'School.dbo.vw_aspnet_WebPartState_User' does not h
           <Parameter Name="CompanyNameId" Type="int" Mode="In" />
           <Parameter Name="SchoolName" Type="varchar" Mode="In" />
           <Parameter Name="SchoolStatusId" Type="int" Mode="In" />
+          <Parameter Name="Program" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="LoginUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="user_name" Type="varchar" Mode="In" />
@@ -2448,6 +2463,7 @@ warning 6002: The table/view 'School.dbo.vw_aspnet_WebPartState_User' does not h
           <EntitySet Name="aspnet_WebEvent_Events" EntityType="Self.aspnet_WebEvent_Events" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="choice_map" EntityType="Self.choice_map" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Company_Name" EntityType="Self.Company_Name" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DailyEmailReport" EntityType="Self.DailyEmailReport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Degree_Of_Interest" EntityType="Self.Degree_Of_Interest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ErrorReports" EntityType="Self.ErrorReports" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EsubMapping" EntityType="Self.EsubMapping" Schema="dbo" store:Type="Tables" />
@@ -2762,7 +2778,8 @@ FROM [dbo].[vicidial_list_back] AS [vicidial_list_back]</DefiningQuery>
           <EntitySet Name="View_Agents" EntityType="Self.View_Agents" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
 [View_Agents].[USER] AS [USER], 
-[View_Agents].[UserID] AS [UserID]
+[View_Agents].[UserID] AS [UserID], 
+[View_Agents].[IsActive] AS [IsActive]
 FROM [dbo].[View_Agents] AS [View_Agents]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vw_aspnet_Applications" EntityType="Self.vw_aspnet_Applications" store:Type="Views" store:Schema="dbo">
@@ -3518,6 +3535,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <Property Name="SchoolName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="SchoolStatusId" Type="Int32" Nullable="false" />
           <Property Name="SubmitId" Type="Int32" />
+          <Property Name="Program" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="school_map">
           <Key>
@@ -3816,6 +3834,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <Property Name="MSEAccess" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="MCMAcess" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" />
+          <Property Name="Lockout" Type="Boolean" />
         </EntityType>
         <EntityType Name="UsersHistory">
           <Key>
@@ -4173,6 +4192,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           </Key>
           <Property Name="USER" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserID" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
         </EntityType>
         <EntityType Name="vw_aspnet_Applications">
           <Key>
@@ -5199,6 +5219,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
             <Parameter Name="CompanyNameId" Mode="In" Type="Int32" />
             <Parameter Name="SchoolName" Mode="In" Type="String" />
             <Parameter Name="SchoolStatusId" Mode="In" Type="Int32" />
+            <Parameter Name="Program" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="LoginUser">
             <Parameter Name="user_name" Mode="In" Type="String" />
@@ -5342,6 +5363,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           </FunctionImport>
           <EntitySet Name="AgentPerformanceInfoes" EntityType="SchoolModel.AgentPerformanceInfo" />
           <EntitySet Name="AgentTimestamps" EntityType="SchoolModel.AgentTimestamp" />
+          <EntitySet Name="DailyEmailReports" EntityType="SchoolModel.DailyEmailReport" />
         </EntityContainer>
         <ComplexType Name="aspnet_Membership_GetPassword_Result">
           <Property Type="String" Name="Column1" Nullable="true" MaxLength="128" />
@@ -5780,6 +5802,17 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Datetime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="DailyEmailReport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Sent" Type="Boolean" />
+          <Property Name="ReportName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Time" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6386,6 +6419,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <EntitySetMapping Name="School_Detail">
             <EntityTypeMapping TypeName="SchoolModel.School_Detail">
               <MappingFragment StoreEntitySet="School_Detail">
+                <ScalarProperty Name="Program" ColumnName="Program" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="PrimaryPhone" ColumnName="PrimaryPhone" />
@@ -6673,6 +6707,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="SchoolModel.user">
               <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="Lockout" ColumnName="Lockout" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="password" ColumnName="password" />
@@ -7069,6 +7104,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <EntitySetMapping Name="View_Agents">
             <EntityTypeMapping TypeName="SchoolModel.View_Agents">
               <MappingFragment StoreEntitySet="View_Agents">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="USER" ColumnName="USER" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
@@ -7829,6 +7865,18 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
                 <ScalarProperty Name="Datetime" ColumnName="Datetime" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DailyEmailReports">
+            <EntityTypeMapping TypeName="SchoolModel.DailyEmailReport">
+              <MappingFragment StoreEntitySet="DailyEmailReport">
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="ReportName" ColumnName="ReportName" />
+                <ScalarProperty Name="Sent" ColumnName="Sent" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

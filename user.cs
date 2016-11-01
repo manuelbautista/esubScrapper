@@ -41,5 +41,6 @@ namespace Dax.Scrapping.Appraisal
         public string MSEAccess { get; set; }
         public string MCMAcess { get; set; }
         public Nullable<bool> IsActive { get; set; }
+        public Nullable<bool> Lockout { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace Dax.Scrapping.Appraisal.Core
 {
   public class ScrapperBase
   {
-    protected ChromiumWebBrowser _brouserComponent;
+        protected ChromiumWebBrowser _brouserComponent;
 
     public ChromiumWebBrowser BrouserComponent
     {

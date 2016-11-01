@@ -97,6 +97,7 @@ namespace Dax.Scrapping.Appraisal
         public DbSet<vw_aspnet_WebPartState_User> vw_aspnet_WebPartState_User { get; set; }
         public DbSet<AgentPerformanceInfo> AgentPerformanceInfoes { get; set; }
         public DbSet<AgentTimestamp> AgentTimestamps { get; set; }
+        public DbSet<DailyEmailReport> DailyEmailReports { get; set; }
     
         [EdmFunction("SchoolEntities", "fnLiveData")]
         public virtual IQueryable<fnLiveData_Result> fnLiveData(string startDate, string endDate)
@@ -2435,7 +2436,7 @@ namespace Dax.Scrapping.Appraisal
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertorUpdateT_Client", client_nameParameter, client_addressParameter, client_cityParameter, client_stateParameter, client_zipParameter, client_phoneParameter, client_work_phoneParameter, client_emailParameter, client_added_byParameter, client_AOIParameter, client_POIParameter, client_citizenshipParameter, client_education_levelParameter, client_high_school_grad_yearParameter, client_degree_of_interestParameter, client_ageParameter, client_degree_start_timeframeParameter, client_high_school_enrolledParameter, client_previously_enrolledParameter, client_militaryParameter, client_genderParameter, client_affiliationParameter, client_best_time_to_contactParameter, client_submittedParameter, client_ipParameter, client_mfp_idParameter, client_attended_classParameter, client_contacted_schoolParameter, client_rnParameter, client_nursingParameter, client_teaching_credParameter, client_sub_idParameter, clientID, client_has_internetParameter);
         }
     
-        public virtual int InsertSchoolDetail(string primaryPhone, Nullable<int> companyNameId, string schoolName, Nullable<int> schoolStatusId)
+        public virtual int InsertSchoolDetail(string primaryPhone, Nullable<int> companyNameId, string schoolName, Nullable<int> schoolStatusId, string program)
         {
             var primaryPhoneParameter = primaryPhone != null ?
                 new ObjectParameter("PrimaryPhone", primaryPhone) :
@@ -2453,7 +2454,11 @@ namespace Dax.Scrapping.Appraisal
                 new ObjectParameter("SchoolStatusId", schoolStatusId) :
                 new ObjectParameter("SchoolStatusId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertSchoolDetail", primaryPhoneParameter, companyNameIdParameter, schoolNameParameter, schoolStatusIdParameter);
+            var programParameter = program != null ?
+                new ObjectParameter("Program", program) :
+                new ObjectParameter("Program", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertSchoolDetail", primaryPhoneParameter, companyNameIdParameter, schoolNameParameter, schoolStatusIdParameter, programParameter);
         }
     
         public virtual int LoginUser(string user_name, string password, ObjectParameter userType)
