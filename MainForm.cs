@@ -140,7 +140,7 @@ namespace Dax.Scrapping.Appraisal
                 return s.Substring(0, l);
             }
             return "";
-
+             
         }
         private void SendReport1ToEmail()
     {
