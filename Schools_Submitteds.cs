@@ -51,5 +51,6 @@ namespace Dax.Scrapping.Appraisal
         public Nullable<int> MCMSubmittedQty { get; set; }
         public string MCMSubmitteds { get; set; }
         public string MCMSubmittedPrograms { get; set; }
+        public Nullable<bool> SendToCallCriteria { get; set; }
     }
 }

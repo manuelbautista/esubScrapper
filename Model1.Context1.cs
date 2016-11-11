@@ -98,6 +98,7 @@ namespace Dax.Scrapping.Appraisal
         public DbSet<AgentPerformanceInfo> AgentPerformanceInfoes { get; set; }
         public DbSet<AgentTimestamp> AgentTimestamps { get; set; }
         public DbSet<DailyEmailReport> DailyEmailReports { get; set; }
+        public DbSet<ScrapperRestart> ScrapperRestarts { get; set; }
     
         [EdmFunction("SchoolEntities", "fnLiveData")]
         public virtual IQueryable<fnLiveData_Result> fnLiveData(string startDate, string endDate)

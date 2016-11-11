@@ -959,6 +959,15 @@ warning 6002: The table/view 'School.dbo.mfp_record' does not have a primary key
           <Property Name="MCMSubmittedQty" Type="int" />
           <Property Name="MCMSubmitteds" Type="nvarchar(max)" />
           <Property Name="MCMSubmittedPrograms" Type="nvarchar(max)" />
+          <Property Name="SendToCallCriteria" Type="bit" />
+        </EntityType>
+        <EntityType Name="ScrapperRestart">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="date" />
+          <Property Name="Restarted" Type="bit" />
         </EntityType>
         <EntityType Name="submit_record">
           <Key>
@@ -2486,6 +2495,7 @@ warning 6002: The table/view 'School.dbo.vw_aspnet_WebPartState_User' does not h
           <EntitySet Name="School_OverrideInputs" EntityType="Self.School_OverrideInputs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="School_Status" EntityType="Self.School_Status" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Schools_Submitteds" EntityType="Self.Schools_Submitteds" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScrapperRestart" EntityType="Self.ScrapperRestart" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="submit_record" EntityType="Self.submit_record" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="T_CLIENT" EntityType="Self.T_CLIENT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Temp_myfootpathaffiliates" EntityType="Self.Temp_myfootpathaffiliates" Schema="dbo" store:Type="Tables" />
@@ -3607,6 +3617,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <Property Name="MCMSubmittedQty" Type="Int32" />
           <Property Name="MCMSubmitteds" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="MCMSubmittedPrograms" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SendToCallCriteria" Type="Boolean" />
         </EntityType>
         <EntityType Name="submit_record">
           <Key>
@@ -5364,6 +5375,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <EntitySet Name="AgentPerformanceInfoes" EntityType="SchoolModel.AgentPerformanceInfo" />
           <EntitySet Name="AgentTimestamps" EntityType="SchoolModel.AgentTimestamp" />
           <EntitySet Name="DailyEmailReports" EntityType="SchoolModel.DailyEmailReport" />
+          <EntitySet Name="ScrapperRestarts" EntityType="SchoolModel.ScrapperRestart" />
         </EntityContainer>
         <ComplexType Name="aspnet_Membership_GetPassword_Result">
           <Property Type="String" Name="Column1" Nullable="true" MaxLength="128" />
@@ -5813,6 +5825,14 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <Property Name="ReportName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Time" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ScrapperRestart">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Restarted" Type="Boolean" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6465,6 +6485,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <EntitySetMapping Name="Schools_Submitteds">
             <EntityTypeMapping TypeName="SchoolModel.Schools_Submitteds">
               <MappingFragment StoreEntitySet="Schools_Submitteds">
+                <ScalarProperty Name="SendToCallCriteria" ColumnName="SendToCallCriteria" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SubmitId" ColumnName="SubmitId" />
                 <ScalarProperty Name="MSSchoolFoundQty" ColumnName="MSSchoolFoundQty" />
@@ -7876,6 +7897,15 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
                 <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="ReportName" ColumnName="ReportName" />
                 <ScalarProperty Name="Sent" ColumnName="Sent" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScrapperRestarts">
+            <EntityTypeMapping TypeName="SchoolModel.ScrapperRestart">
+              <MappingFragment StoreEntitySet="ScrapperRestart">
+                <ScalarProperty Name="Restarted" ColumnName="Restarted" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

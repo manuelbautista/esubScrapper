@@ -8,7 +8,7 @@ using CefSharp;
 
 namespace Dax.Scrapping.Appraisal.Core
 {
-    public class ReportDownloadHandler : IDownloadHandler
+    public class Report3DownloadHandler : IDownloadHandler
     {
         private bool FileExists(string fileName)
         {
@@ -17,13 +17,14 @@ namespace Dax.Scrapping.Appraisal.Core
         }
         public void OnBeforeDownload(IBrowser browser, DownloadItem downloadItem, IBeforeDownloadCallback callback)
         {
-            var filePath = @"C:\esubmitter\Reports\Report1\";
+            var filePath = @"C:\esubmitter\Reports\Report3\";
             if (!Directory.Exists(filePath))
             {
                 Directory.CreateDirectory(filePath);
             }
             if (!callback.IsDisposed)
             {
+                downloadItem.SuggestedFileName = "(NC)" + downloadItem.SuggestedFileName;
                 //if (FileExists(downloadItem.SuggestedFileName)) return;
 
                 using (callback)
@@ -36,7 +37,7 @@ namespace Dax.Scrapping.Appraisal.Core
                         Time = DateTime.Now.ToShortTimeString(),
                         Date = DateTime.Now.Date,
                         Path = filePath + downloadItem.SuggestedFileName,
-                        ReportName = "Report1",
+                        ReportName = "Report3",
                         Sent = false
                     };
                     school.DailyEmailReports.Add(daily);

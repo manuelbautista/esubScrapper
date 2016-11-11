@@ -56,8 +56,15 @@ namespace Dax.Scrapping.Appraisal
         private Panel panel2;
         private ListBox listBoxReportsDownload;
         private NotifyIcon notifyIcon1;
-      public bool isLogin = true;
-    public MainForm(bool autoStart = false)
+        private TabPage tabPage4;
+        private Panel panelReport2;
+        public bool isLogin = true;
+      private ChromiumWebBrowser browserReport2Dev;
+        private TabPage tabPage5;
+        private Panel panelReport3;
+        public StepsEnum.Steps actualStepReport2;
+        public StepsEnum.Steps actualStepReport3;
+        public MainForm(bool autoStart = false)
     {
       this._AutoStart = autoStart;
       this.InitializeComponent();
@@ -142,11 +149,85 @@ namespace Dax.Scrapping.Appraisal
             return "";
              
         }
-        private void SendReport1ToEmail()
+        private void SendReport3ToEmail(string subject)
+        {
+            //send the first Report
+            var daily = new SchoolEntities();
+            var reportsToSend = daily.DailyEmailReports.Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false)).ToList().Where(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report3"));
+
+            foreach (var report in reportsToSend)
+            {
+                //MailMessage mail = new MailMessage();
+                MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
+                SmtpClient client = new SmtpClient();
+                client.Host = "smtpout.secureserver.net";
+
+                client.Port = 3535;  //Tried 80, 3535, 25, 465 (SSL)
+                client.UseDefaultCredentials = false;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.EnableSsl = false;
+                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educ@t|09");
+                mail.IsBodyHtml = true;
+
+                //mail.From = new MailAddress("reports@statewideconsultants.com");
+                //mail.To.Add("b0hcoder@gmail.com");
+                mail.Subject = subject;
+                mail.Body = "mail with attachment";
+                mail.IsBodyHtml = true;
+                System.Net.Mail.Attachment attachment;
+                attachment = new System.Net.Mail.Attachment(report.Path);
+                mail.Attachments.Add(attachment);
+
+                report.Sent = true;
+                daily.DailyEmailReports.AddOrUpdate(report);
+                daily.SaveChanges();
+
+                client.Send(mail);
+            }
+        }
+
+        private void SendReport2ToEmail(string subject)
+        {
+            //send the first Report
+            var daily = new SchoolEntities();
+            var reportsToSend = daily.DailyEmailReports.Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false)).ToList().Where(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report2"));
+
+            foreach (var report in reportsToSend)
+            {
+                //MailMessage mail = new MailMessage();
+                MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
+                SmtpClient client = new SmtpClient();
+                client.Host = "smtpout.secureserver.net";
+
+                client.Port = 3535;  //Tried 80, 3535, 25, 465 (SSL)
+                client.UseDefaultCredentials = false;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.EnableSsl = false;
+                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educ@t|09");
+                mail.IsBodyHtml = true;
+
+                //mail.From = new MailAddress("reports@statewideconsultants.com");
+                //mail.To.Add("b0hcoder@gmail.com");
+                mail.Subject = subject;
+                mail.Body = "mail with attachment";
+                mail.IsBodyHtml = true;
+                System.Net.Mail.Attachment attachment;
+                attachment = new System.Net.Mail.Attachment(report.Path);
+                mail.Attachments.Add(attachment);
+
+                report.Sent = true;
+                daily.DailyEmailReports.AddOrUpdate(report);
+                daily.SaveChanges();
+
+                client.Send(mail);
+            }
+        }
+
+        private void SendReport1ToEmail(string subject)
     {
         //send the first Report
         var daily = new SchoolEntities();
-        var reportsToSend = daily.DailyEmailReports.Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false)).ToList().Where(a=> a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date));
+        var reportsToSend = daily.DailyEmailReports.Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false)).ToList().Where(a=> a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report1"));
 
         foreach (var report in reportsToSend)
         {
@@ -164,7 +245,7 @@ namespace Dax.Scrapping.Appraisal
 
             //mail.From = new MailAddress("reports@statewideconsultants.com");
             //mail.To.Add("b0hcoder@gmail.com");
-            mail.Subject = "Export Call Report";
+            mail.Subject = subject;
             mail.Body = "mail with attachment";
             mail.IsBodyHtml = true;
             System.Net.Mail.Attachment attachment;
@@ -178,25 +259,31 @@ namespace Dax.Scrapping.Appraisal
             client.Send(mail);
         }
     }
+
     private void MainForm_Load(object sender, EventArgs e)
     {
       this.LoadConfiguration();
       this.InitializeBrouser();
-      Cef.Initialize();
+        var settings = new CefSettings();
+        //Property to fix the custom scaling problem
+        //settings.CefCommandLineArgs.Add("proxy-server", "107.182.113.247:56227");
+        //settings.CefCommandLineArgs.Add("proxy-bypass-list", "127.*,192.168.*,10.10.*,193.9.162.*");
+        //Cef.Initialize(settings);
+        Cef.Initialize();
 
-      double num = Convert.ToDouble(Helper.GetAppSettingAsString("Time"));
-      this.aTimer.Elapsed += new ElapsedEventHandler(this.ATimer_Elapsed);
-      this.aTimer.Interval = num;
-      this.aTimer.Enabled = true;
-      this.Clear();
-      this.panelBrowser.Controls.Clear();
-      this.btnSearch_Click((object) null, (EventArgs) null);
+        double num = Convert.ToDouble(Helper.GetAppSettingAsString("Time"));
+        this.aTimer.Elapsed += new ElapsedEventHandler(this.ATimer_Elapsed);
+        this.aTimer.Interval = num;
+        this.aTimer.Enabled = true;
+        this.Clear();
+        this.panelBrowser.Controls.Clear();
+        this.btnSearch_Click((object) null, (EventArgs) null);
     }
 
     private bool Report1IsSent()
     {
         bool isSent = true;
-        if (DateTime.Now.Hour >= 9)
+        if (DateTime.Now.Hour >= 9 && DateTime.Now.Hour < 17  && DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
         {
             SchoolEntities school = new SchoolEntities();
              isSent =
@@ -215,42 +302,110 @@ namespace Dax.Scrapping.Appraisal
 
         return !isSent;
     }
-    private void ATimer_Elapsed(object sender, ElapsedEventArgs e)
+    private bool Report2IsSent()
     {
-        this._scraper._curStatus = Status.Searching;
-        this._scraper.LoadWeb(this._scraper._newAgentsInfoSite);
-        //this._brouserComponent.Load(this._newAgentsInfoSite);
-        //Application.Restart();
-
-        var reportIsSent = Report1IsSent();
-        if (!reportIsSent)
+        bool isSent = true;
+        if (DateTime.Now.Hour >= 9 && DateTime.Now.Hour < 17  && DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
         {
-            if (!recordIsSaved())
-            {
-                var urlReport = GetReport1LinkFromEmail();
-                ChromiumWebBrowser browserReport1 =
-                    new ReportBrowser(urlReport);
-                browserReport1.DownloadHandler = new ReportDownloadHandler();
-                this.panelReportsDownload.Controls.Add(browserReport1);
-                browserReport1.LoadingStateChanged += BrowserReport1_LoadingStateChanged;
-                ConsultTabControl.SelectedIndex = 2;
-                Thread.Sleep(1000);
-                ConsultTabControl.SelectedIndex = 0;
-                }
-            
-            //check to send report 1 email
-            SendReport1ToEmail();
+            SchoolEntities school = new SchoolEntities();
+            isSent =
+                school.DailyEmailReports.ToList()
+                    .Any(
+                        a =>
+                            a.Date.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report2") && a.Sent.HasValue &&
+                            a.Sent.Value.Equals(true));
         }
+        return isSent;
     }
+    private bool SaveReport2Today()
+        {
+            SchoolEntities school = new SchoolEntities();
+            var isSent = school.DailyEmailReports.ToList().Any(a => a.Date.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report2"));
 
-      private bool recordIsSaved()
+            return !isSent;
+        }
+    private bool Report3IsSent()
+    {
+        bool isSent = true;
+        if (DateTime.Now.Hour >= 9 && DateTime.Now.Hour < 17  && DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
+        {
+            SchoolEntities school = new SchoolEntities();
+            isSent =
+                school.DailyEmailReports.ToList()
+                    .Any(
+                        a =>
+                            a.Date.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report3") && a.Sent.HasValue &&
+                            a.Sent.Value.Equals(true));
+        }
+        return isSent;
+    }
+    private bool SaveReport3Today()
+        {
+            SchoolEntities school = new SchoolEntities();
+            var isSent = school.DailyEmailReports.ToList().Any(a => a.Date.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report3"));
+
+            return !isSent;
+        }
+
+
+      private void ATimer_Elapsed(object sender, ElapsedEventArgs e)
       {
-          SchoolEntities school = new SchoolEntities();
-          return
-              school.DailyEmailReports
-                  .ToList()
-                  .Any(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date));
+          this._scraper._curStatus = Status.Searching;
+          this._scraper.LoadWeb(this._scraper._newAgentsInfoSite);
+
+          actualStepReport2 = StepsEnum.Steps.Step1;
+          actualStepReport3 = StepsEnum.Steps.Step1;
+
+          if (DateTime.Now.Hour == 9)
+          {
+              var scrapper = new ScrapperRestart();
+              var school = new SchoolEntities();
+              if (!school.ScrapperRestarts.ToList().Any(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date)))
+              {
+                  scrapper.Date = DateTime.Now.Date;
+                  scrapper.Restarted = true;
+                  school.ScrapperRestarts.Add(scrapper);
+                  school.SaveChanges();
+                   //Restart the application
+                  Application.Restart();
+              }
+          }
+          //just execute the download and send file between 9 and 4
+          if (DateTime.Now.Hour >= 9 && DateTime.Now.Hour < 17  && DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
+          {
+                //Send reports info
+                SaveReports();
+                //Send Emails
+                SendReport1ToEmail("Export Call Report");
+                SendReport2ToEmail("MS CA Report");
+                SendReport3ToEmail("MS NC Report");
+            }
       }
+
+      private bool recordReport3IsSaved()
+        {
+            SchoolEntities school = new SchoolEntities();
+            return
+                school.DailyEmailReports
+                    .ToList()
+                    .Any(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report3"));
+        }
+        private bool recordReport2IsSaved()
+    {
+        SchoolEntities school = new SchoolEntities();
+        return
+            school.DailyEmailReports
+                .ToList()
+                .Any(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report2"));
+    }
+    private bool recordIsSaved()
+    {
+        SchoolEntities school = new SchoolEntities();
+        return
+            school.DailyEmailReports
+                .ToList()
+                .Any(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report1"));
+    }
     private void InitializeBrouser()
     {
     }
@@ -335,34 +490,178 @@ namespace Dax.Scrapping.Appraisal
           
                 this.StarLoadingInProgress();
             }));
-                //Report 1 Download
-                //this.isLogin = true;
-            //this.Invoke((Action)(() =>
-            //{
-            bool saveReport = SaveReport1Today();
-            bool reportIsSent = Report1IsSent();
 
-            if (saveReport && !reportIsSent)
-            {
-                var urlReport = GetReport1LinkFromEmail();
-                ChromiumWebBrowser browserReport1 =
-                    new ReportBrowser(urlReport);
-                browserReport1.DownloadHandler = new ReportDownloadHandler();
-                this.panelReportsDownload.Controls.Add(browserReport1);
-                browserReport1.LoadingStateChanged += BrowserReport1_LoadingStateChanged;
-                ConsultTabControl.SelectedIndex = 2;
-                Thread.Sleep(1000);
-                ConsultTabControl.SelectedIndex = 0;
-            }
-
-            }
+                //Send reports info
+                SaveReports();
+      }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
     }
 
-        private void BrowserReport1_LoadingStateChanged(object sender, LoadingStateChangedEventArgs e)
+      private void SaveReports()
+      {
+            bool saveReport = SaveReport1Today();
+            //bool reportIsSent = Report1IsSent();
+            //
+            bool saveReport2 = SaveReport2Today();
+            //bool report2IsSent = Report2IsSent();
+            //
+            bool saveReport3 = SaveReport3Today();
+            //bool report3IsSent = Report3IsSent();
+
+            if (saveReport)
+            {
+                var urlReport = GetReport1LinkFromEmail();
+                if (!string.IsNullOrEmpty(urlReport))
+                {
+                    ChromiumWebBrowser browserReport1 = new ReportBrowser(urlReport);
+                    browserReport1.DownloadHandler = new ReportDownloadHandler();
+                    this.panelReportsDownload.Controls.Clear();
+                    this.panelReportsDownload.Controls.Add(browserReport1);
+                    browserReport1.LoadingStateChanged += BrowserReport1_LoadingStateChanged;
+                    ConsultTabControl.SelectedIndex = 2;
+                    Thread.Sleep(1000);
+                    ConsultTabControl.SelectedIndex = 0;
+                }
+            }
+            if (saveReport2)
+            {
+                //Report 2
+                var urlReport2 = "http://reporting.achieveyourcareer.com/";
+                var filePath = @"C:\esubmitter\Reports\Report2";
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
+                }
+                var report2Setting = new RequestContextSettings
+                {
+                    CachePath = "",
+                    PersistSessionCookies = false
+
+                };
+
+                ChromiumWebBrowser browserReport2 = new ReportBrowser(urlReport2);
+                browserReport2.RequestContext = new RequestContext(report2Setting);
+                browserReport2.RequestContext.GetDefaultCookieManager(null).SetStoragePath(filePath + @"\Report2Cookies", false);
+
+                browserReport2.DownloadHandler = new Report2DownloadHandler();
+                this.panelReport2.Controls.Clear();
+                this.panelReport2.Controls.Add(browserReport2);
+                browserReport2.LoadingStateChanged += BrowserReport2_LoadingStateChanged;
+                ConsultTabControl.SelectedIndex = 3;
+                Thread.Sleep(1000);
+                ConsultTabControl.SelectedIndex = 0;
+            }
+            if (saveReport3)
+            {
+                //Report 2
+                var urlReport3 = "http://reporting.achieveyourcareer.com/";
+                var filePath = @"C:\esubmitter\Reports\Report3";
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
+                }
+                var report2Setting = new RequestContextSettings
+                {
+                    CachePath = "",
+                    PersistSessionCookies = false
+                };
+
+                ChromiumWebBrowser browserReport3 = new ReportBrowser(urlReport3);
+                browserReport3.RequestContext = new RequestContext(report2Setting);
+                browserReport3.RequestContext.GetDefaultCookieManager(null).SetStoragePath(filePath + @"\Report3Cookies", false);
+
+                browserReport3.DownloadHandler = new Report3DownloadHandler();
+                this.panelReport3.Controls.Clear();
+                this.panelReport3.Controls.Add(browserReport3);
+                browserReport3.LoadingStateChanged += BrowserReport3_LoadingStateChanged;
+                ConsultTabControl.SelectedIndex = 4;
+                Thread.Sleep(1000);
+                ConsultTabControl.SelectedIndex = 0;
+            }
+        }
+
+      private void BrowserReport3_LoadingStateChanged(object sender, LoadingStateChangedEventArgs e)
+        {
+            if (!e.IsLoading)
+            {
+                if (actualStepReport3 == StepsEnum.Steps.Step4)
+                {
+                    var browser = sender as ChromiumWebBrowser;
+                    var scriptLoginReport2 = browser.GetScriptText("DownloadReport2.js");
+                    browser.ExecuteScriptAsync(scriptLoginReport2);
+                    actualStepReport3 = StepsEnum.Steps.Step5;
+                }
+
+                if (actualStepReport3 == StepsEnum.Steps.Step3)
+                {
+                    var browser = sender as ChromiumWebBrowser;
+                    var scriptLoginReport2 = browser.GetScriptText("Report2Search.js");
+                    browser.ExecuteScriptAsync(scriptLoginReport2);
+                    actualStepReport3 = StepsEnum.Steps.Step4;
+                }
+
+                if (actualStepReport3 == StepsEnum.Steps.Step2)
+                {
+                    var browser = sender as ChromiumWebBrowser;
+                    var scriptLoginReport2 = browser.GetScriptText("Report2Step2.js");
+                    browser.ExecuteScriptAsync(scriptLoginReport2);
+                    actualStepReport3 = StepsEnum.Steps.Step3;
+                }
+
+                if (actualStepReport3 == StepsEnum.Steps.Step1)
+                {
+                    var browser = sender as ChromiumWebBrowser;
+                    var scriptLoginReport2 = browser.GetScriptText("LoginReport3.js");
+                    browser.ExecuteScriptAsync(scriptLoginReport2);
+                    actualStepReport3 = StepsEnum.Steps.Step2;
+                }
+
+            }
+        }
+
+        private void BrowserReport2_LoadingStateChanged(object sender, LoadingStateChangedEventArgs e)
+        {
+            if (!e.IsLoading)
+            {
+                if (actualStepReport2 == StepsEnum.Steps.Step4)
+                {
+                    var browser = sender as ChromiumWebBrowser;
+                    var scriptLoginReport2 = browser.GetScriptText("DownloadReport2.js");
+                    browser.ExecuteScriptAsync(scriptLoginReport2);
+                    actualStepReport2 = StepsEnum.Steps.Step5;
+                }
+
+                if (actualStepReport2 == StepsEnum.Steps.Step3)
+                {
+                    var browser = sender as ChromiumWebBrowser;
+                    var scriptLoginReport2 = browser.GetScriptText("Report2Search.js");
+                    browser.ExecuteScriptAsync(scriptLoginReport2);
+                    actualStepReport2 = StepsEnum.Steps.Step4;
+                }
+
+                if (actualStepReport2 == StepsEnum.Steps.Step2)
+                {
+                    var browser = sender as ChromiumWebBrowser;
+                    var scriptLoginReport2 = browser.GetScriptText("Report2Step2.js");
+                    browser.ExecuteScriptAsync(scriptLoginReport2);
+                    actualStepReport2 = StepsEnum.Steps.Step3;
+                }
+
+                if (actualStepReport2 == StepsEnum.Steps.Step1)
+                {
+                    var browser = sender as ChromiumWebBrowser;
+                    var scriptLoginReport2 = browser.GetScriptText("LoginReport2.js");
+                    browser.ExecuteScriptAsync(scriptLoginReport2);
+                    actualStepReport2 = StepsEnum.Steps.Step2;
+                }
+
+            }
+        }
+
+    private void BrowserReport1_LoadingStateChanged(object sender, LoadingStateChangedEventArgs e)
         {
             if (!e.IsLoading)
             {
@@ -393,13 +692,16 @@ namespace Dax.Scrapping.Appraisal
                     else
                     {
                         if (browser != null)
-                            browser.Load("http://x5adminw.ytel.com/Download/report_estomes/581321d6-241c-482e-8b85-7433ac1f800c?token=8ocYy62JTpK2q67");
+                        {
+                            var urlReport = GetReport1LinkFromEmail();
+                            browser.Load(urlReport);
+                        }
                     }
                 });
             }
         }
 
-        private void _scraper_OnCompleted()
+    private void _scraper_OnCompleted()
         {
           if (!this._AutoStart)
             return;
@@ -479,6 +781,10 @@ namespace Dax.Scrapping.Appraisal
             this.panel2 = new System.Windows.Forms.Panel();
             this.panelReportsDownload = new System.Windows.Forms.Panel();
             this.listBoxReportsDownload = new System.Windows.Forms.ListBox();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.panelReport2 = new System.Windows.Forms.Panel();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.panelReport3 = new System.Windows.Forms.Panel();
             this.ConsultTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -491,6 +797,8 @@ namespace Dax.Scrapping.Appraisal
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.tabPage5.SuspendLayout();
             this.SuspendLayout();
             // 
             // ConsultTabControl
@@ -498,6 +806,8 @@ namespace Dax.Scrapping.Appraisal
             this.ConsultTabControl.Controls.Add(this.tabPage1);
             this.ConsultTabControl.Controls.Add(this.tabPage2);
             this.ConsultTabControl.Controls.Add(this.tabPage3);
+            this.ConsultTabControl.Controls.Add(this.tabPage4);
+            this.ConsultTabControl.Controls.Add(this.tabPage5);
             this.ConsultTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ConsultTabControl.Location = new System.Drawing.Point(0, 0);
             this.ConsultTabControl.Name = "ConsultTabControl";
@@ -693,7 +1003,7 @@ namespace Dax.Scrapping.Appraisal
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(798, 461);
             this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Reports Download";
+            this.tabPage3.Text = "Report 1 Download";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // panel2
@@ -722,6 +1032,42 @@ namespace Dax.Scrapping.Appraisal
             this.listBoxReportsDownload.Size = new System.Drawing.Size(239, 461);
             this.listBoxReportsDownload.TabIndex = 0;
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.panelReport2);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(798, 461);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Report 2 Download";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // panelReport2
+            // 
+            this.panelReport2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelReport2.Location = new System.Drawing.Point(0, 0);
+            this.panelReport2.Name = "panelReport2";
+            this.panelReport2.Size = new System.Drawing.Size(798, 461);
+            this.panelReport2.TabIndex = 0;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.panelReport3);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(798, 461);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Report 3 Download";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // panelReport3
+            // 
+            this.panelReport3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelReport3.Location = new System.Drawing.Point(0, 0);
+            this.panelReport3.Name = "panelReport3";
+            this.panelReport3.Size = new System.Drawing.Size(798, 461);
+            this.panelReport3.TabIndex = 0;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -747,8 +1093,15 @@ namespace Dax.Scrapping.Appraisal
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
             this.ResumeLayout(false);
 
     }
-  }
+
+        private void buttonShowDevToolMS_Click(object sender, EventArgs e)
+        {
+            browserReport2Dev.ShowDevTools();
+        }
+    }
 }
