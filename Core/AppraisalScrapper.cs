@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Data.Objects;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
@@ -163,7 +164,7 @@ namespace Dax.Scrapping.Appraisal.Core
             agentsInfo.JOB = this.GetColumnValue(listInfo, agent, "JOB");
             agentsInfo.XFER = this.GetColumnValue(listInfo, agent, "XFER");
             agentsInfo.NOT18 = this.GetColumnValue(listInfo, agent, "NOT18");
-            agentsInfo.Date = DateTime.Now.ToShortDateString();
+            agentsInfo.Date = DateTime.Now.ToString("MM/dd/yyyy",CultureInfo.InvariantCulture);
             agentsInfo.XUbr = this.GetColumnValue(listInfo, agent, "XUBR");
             agentsInfoList.Add(agentsInfo);
           }
