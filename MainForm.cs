@@ -146,6 +146,12 @@ namespace Dax.Scrapping.Appraisal
             {
                 return s.Substring(0, l);
             }
+            else
+            {
+                int l2 = s.IndexOf("<br");
+
+                return s.Substring(0, l2);
+            }
             return "";
              
         }
