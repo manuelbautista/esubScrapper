@@ -362,7 +362,7 @@ namespace Dax.Scrapping.Appraisal.Core
             return DateTime.Now;
         }
 
-        public AgentsInfoExtended GetPerformanceData(DateTime init, int? userId)
+        public AgentsInfoExtended GetPerformanceData(DateTime init, int? userId, List<AgentsInfo> agentsInfo )
         {
             try
             {
@@ -373,7 +373,7 @@ namespace Dax.Scrapping.Appraisal.Core
                 List<AgentsInfoExtended> listAgentsExtended = new List<AgentsInfoExtended>();
                 var agent = new AgentsInfo();
 
-                var agentsInfos = school.AgentsInfoes.Select(a => a).Where(a => a.Date.Equals(todayDate) && a.UserID.HasValue && a.UserID.Value.Equals(id)).OrderByDescending(a => a.USER).FirstOrDefault();
+                var agentsInfos = agentsInfo.Select(a => a).Where(a => a.UserID.HasValue && a.UserID.Value.Equals(id)).OrderByDescending(a => a.USER).FirstOrDefault();
                 agent = agentsInfos;
                 if (agent != null)
                 {

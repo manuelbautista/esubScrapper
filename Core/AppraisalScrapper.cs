@@ -206,7 +206,7 @@ namespace Dax.Scrapping.Appraisal.Core
           foreach (var agent in listAgent)
           {
               var service = new AgentsPerformanceService();
-              var agentExtended =  service.GetPerformanceData(DateTime.Now, agent.UserID);
+              var agentExtended =  service.GetPerformanceData(DateTime.Now, agent.UserID, listAgent);
               listAgentsExtended.Add(agentExtended);
           }
           foreach (var agent in listAgent)
@@ -517,14 +517,14 @@ namespace Dax.Scrapping.Appraisal.Core
                     agentPerformance.TotalLeads = ((x1) + (x2*2) + (x3*3) + (x4*4) + (xht*3)).ToString();
                     agentPerformance.TotalProjectedLead = ((8*userData.LPH)*.9).ToString();
                     var scrapingEntities = new SchoolEntities();
-                    var todayDate = DateTime.Now.ToShortDateString();
+                    var todayDate = DateTime.Now.ToString("MM/dd/yyyy");
                     var agent = scrapingEntities.AgentPerformanceInfoes
                         .FirstOrDefault(a => a.Date.Equals(todayDate) && a.UserID.Equals(userId.Value));
 
                     if (agent != null)
                     {
                         agent.TotalLeads = agentPerformance.TotalLeads;
-                        agent.Date = DateTime.Now.ToShortDateString();
+                        agent.Date = DateTime.Now.ToString("MM/dd/yyyy");
                         agent.EstWorkingTime = agentPerformance.EstWorkingTime;
                         agent.Rank = GetActualRank(userData.LPH, listAgents, agentPerformance.TimeUtilization); //agentPerformance.Rank;
                         agent.TimeUtilization = agentPerformance.TimeUtilization;
@@ -542,7 +542,7 @@ namespace Dax.Scrapping.Appraisal.Core
                     {
                         agent = new Appraisal.AgentPerformanceInfo();
                         agent.TotalLeads = agentPerformance.TotalLeads;
-                        agent.Date = DateTime.Now.ToShortDateString();
+                        agent.Date = DateTime.Now.ToString("MM/dd/yyyy");
                         agent.EstWorkingTime = agentPerformance.EstWorkingTime;
                         agent.Rank = GetActualRank(userData.LPH, listAgents, agentPerformance.TimeUtilization);
                         agent.TimeUtilization = agentPerformance.TimeUtilization;
