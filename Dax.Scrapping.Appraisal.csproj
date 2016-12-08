@@ -55,6 +55,24 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ActiveUp.Net.Common">
+      <HintPath>lib\ActiveUp.Net.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ActiveUp.Net.Dns">
+      <HintPath>lib\ActiveUp.Net.Dns.dll</HintPath>
+    </Reference>
+    <Reference Include="ActiveUp.Net.Groupware">
+      <HintPath>lib\ActiveUp.Net.Groupware.dll</HintPath>
+    </Reference>
+    <Reference Include="ActiveUp.Net.Imap4">
+      <HintPath>lib\ActiveUp.Net.Imap4.dll</HintPath>
+    </Reference>
+    <Reference Include="ActiveUp.Net.Mail">
+      <HintPath>lib\ActiveUp.Net.Mail.dll</HintPath>
+    </Reference>
+    <Reference Include="ActiveUp.Net.Smtp">
+      <HintPath>lib\ActiveUp.Net.Smtp.dll</HintPath>
+    </Reference>
     <Reference Include="CefSharp">
       <HintPath>lib\CefSharp.dll</HintPath>
     </Reference>
@@ -64,12 +82,8 @@
     <Reference Include="CefSharp.WinForms">
       <HintPath>lib\CefSharp.WinForms.dll</HintPath>
     </Reference>
-    <Reference Include="EAGetMail45">
-      <HintPath>..\..\..\..\..\Program Files (x86)\EAGetMail\EAGetMail45.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="EntityFramework">
+      <HintPath>lib\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>lib\HtmlAgilityPack.dll</HintPath>
@@ -162,6 +176,7 @@
     <Compile Include="Core\AgentsInfoExtended.cs" />
     <Compile Include="Core\AgentsPerformanceService.cs" />
     <Compile Include="Core\ChromiumBrowserExtension.cs" />
+    <Compile Include="Core\MailRepository.cs" />
     <Compile Include="Core\Report3DownloadHandler.cs" />
     <Compile Include="Core\Report2DownloadHandler.cs" />
     <Compile Include="Core\ReportBrowser.cs">

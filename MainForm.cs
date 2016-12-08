@@ -21,7 +21,7 @@ using System.Net.Mail;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
-using EAGetMail;
+using ActiveUp.Net.Mail;
 
 namespace Dax.Scrapping.Appraisal
 {
@@ -79,52 +79,18 @@ namespace Dax.Scrapping.Appraisal
 
       private string GetReport1LinkFromEmail()
       {
-            //// Create a folder named "inbox" under current directory
-            //// to save the email retrieved.
+            MailRepository mail = new MailRepository("imap.secureserver.net", 143, false, "reports@statewideconsultants.com", "Educ@t|09");
+
             string curpath = Directory.GetCurrentDirectory();
-            List<Mail> emails = new List<Mail>();
-
-            //string mailbox = String.Format("{0}\\inbox", curpath);
-
-            //// If the folder is not existed, create it.
-            //if (!Directory.Exists(mailbox))
-            //{
-            //    Directory.CreateDirectory(mailbox);
-            //}
-
-            MailServer oServer = new MailServer("pop.secureserver.net",
-                        "reports@statewideconsultants.com", "Educ@t|09", ServerProtocol.Pop3);
-            MailClient oClient = new MailClient("TryIt");
-
-            // If your POP3 server requires SSL connection,
-            // Please add the following codes:
-            // oServer.SSLConnection = true;
-            // oServer.Port = 995;
-
+            var mails = mail.GetUnreadMails("inbox").Where(a=>a.ReceivedDate.ToString("MM/dd/yyyy").Equals(DateTime.Now.ToString("MM/dd/yyyy")));
+            
             try
             {
-                oClient.Connect(oServer);
-                MailInfo[] infos = oClient.GetMailInfos();
-                for (int i = 0; i < infos.Length; i++)
-                {
-                    MailInfo info = infos[i];
-                    Console.WriteLine("Index: {0}; Size: {1}; UIDL: {2}",
-                        info.Index, info.Size, info.UIDL);
-
-                    // Receive email from POP3 server
-                    Mail oMail = oClient.GetMail(info);
-                    emails.Add(oMail);
-
-                }
-
-                // Quit and pure emails marked as deleted from POP3 server.
-                oClient.Quit();
-                var todayEmails = emails.Where(a => a.ReceivedDate.Date.Equals(DateTime.Now.Date));
-                foreach (var email in todayEmails)
+                foreach (var email in mails)
                 {
                     if (email.Subject.Contains("Export Call Report"))
                     {
-                        var url = sep(email.HtmlBody);
+                        var url = sep(email.BodyHtml.Text);
                         return url;
                     }
                 }
@@ -165,7 +131,7 @@ namespace Dax.Scrapping.Appraisal
             {
                 //MailMessage mail = new MailMessage();
                 MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
-                SmtpClient client = new SmtpClient();
+                System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
                 client.Host = "smtpout.secureserver.net";
 
                 client.Port = 3535;  //Tried 80, 3535, 25, 465 (SSL)
@@ -202,7 +168,7 @@ namespace Dax.Scrapping.Appraisal
             {
                 //MailMessage mail = new MailMessage();
                 MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
-                SmtpClient client = new SmtpClient();
+                System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
                 client.Host = "smtpout.secureserver.net";
 
                 client.Port = 3535;  //Tried 80, 3535, 25, 465 (SSL)
@@ -239,7 +205,7 @@ namespace Dax.Scrapping.Appraisal
         {
             //MailMessage mail = new MailMessage();
             MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
-            SmtpClient client = new SmtpClient();
+                System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
             client.Host = "smtpout.secureserver.net";
 
             client.Port = 3535;  //Tried 80, 3535, 25, 465 (SSL)
@@ -286,42 +252,12 @@ namespace Dax.Scrapping.Appraisal
         this.btnSearch_Click((object) null, (EventArgs) null);
     }
 
-    private bool Report1IsSent()
-    {
-        bool isSent = true;
-        if (DateTime.Now.Hour >= 9 && DateTime.Now.Hour < 17  && DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
-        {
-            SchoolEntities school = new SchoolEntities();
-             isSent =
-                school.DailyEmailReports.ToList()
-                    .Any(
-                        a =>
-                            a.Date.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report1") && a.Sent.HasValue &&
-                            a.Sent.Value.Equals(true));
-        }
-        return isSent;
-    }
     private bool SaveReport1Today()
     {
         SchoolEntities school = new SchoolEntities();
         var isSent = school.DailyEmailReports.ToList().Any(a => a.Date.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report1"));
 
         return !isSent;
-    }
-    private bool Report2IsSent()
-    {
-        bool isSent = true;
-        if (DateTime.Now.Hour >= 9 && DateTime.Now.Hour < 17  && DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
-        {
-            SchoolEntities school = new SchoolEntities();
-            isSent =
-                school.DailyEmailReports.ToList()
-                    .Any(
-                        a =>
-                            a.Date.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report2") && a.Sent.HasValue &&
-                            a.Sent.Value.Equals(true));
-        }
-        return isSent;
     }
     private bool SaveReport2Today()
         {
@@ -330,21 +266,6 @@ namespace Dax.Scrapping.Appraisal
 
             return !isSent;
         }
-    private bool Report3IsSent()
-    {
-        bool isSent = true;
-        if (DateTime.Now.Hour >= 9 && DateTime.Now.Hour < 17  && DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
-        {
-            SchoolEntities school = new SchoolEntities();
-            isSent =
-                school.DailyEmailReports.ToList()
-                    .Any(
-                        a =>
-                            a.Date.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report3") && a.Sent.HasValue &&
-                            a.Sent.Value.Equals(true));
-        }
-        return isSent;
-    }
     private bool SaveReport3Today()
         {
             SchoolEntities school = new SchoolEntities();
@@ -388,30 +309,6 @@ namespace Dax.Scrapping.Appraisal
             }
       }
 
-      private bool recordReport3IsSaved()
-        {
-            SchoolEntities school = new SchoolEntities();
-            return
-                school.DailyEmailReports
-                    .ToList()
-                    .Any(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report3"));
-        }
-        private bool recordReport2IsSaved()
-    {
-        SchoolEntities school = new SchoolEntities();
-        return
-            school.DailyEmailReports
-                .ToList()
-                .Any(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report2"));
-    }
-    private bool recordIsSaved()
-    {
-        SchoolEntities school = new SchoolEntities();
-        return
-            school.DailyEmailReports
-                .ToList()
-                .Any(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report1"));
-    }
     private void InitializeBrouser()
     {
     }
