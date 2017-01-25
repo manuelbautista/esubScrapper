@@ -79,7 +79,7 @@ namespace Dax.Scrapping.Appraisal
 
       private string GetReport1LinkFromEmail()
       {
-            MailRepository mail = new MailRepository("imap.secureserver.net", 143, false, "reports@statewideconsultants.com", "Educ@t|09");
+            MailRepository mail = new MailRepository("imap.secureserver.net", 143, false, "reports@statewideconsultants.com", "Educat!0n");
 
             string curpath = Directory.GetCurrentDirectory();
             var mails = mail.GetUnreadMails("inbox").Where(a=>a.ReceivedDate.ToString("MM/dd/yyyy").Equals(DateTime.Now.ToString("MM/dd/yyyy")));
@@ -138,9 +138,9 @@ namespace Dax.Scrapping.Appraisal
                 client.UseDefaultCredentials = false;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.EnableSsl = false;
-                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educ@t|09");
+                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
                 mail.IsBodyHtml = true;
-
+                 
                 //mail.From = new MailAddress("reports@statewideconsultants.com");
                 //mail.To.Add("b0hcoder@gmail.com");
                 mail.Subject = subject;
@@ -175,7 +175,7 @@ namespace Dax.Scrapping.Appraisal
                 client.UseDefaultCredentials = false;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.EnableSsl = false;
-                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educ@t|09");
+                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
                 mail.IsBodyHtml = true;
 
                 //mail.From = new MailAddress("reports@statewideconsultants.com");
@@ -212,7 +212,7 @@ namespace Dax.Scrapping.Appraisal
             client.UseDefaultCredentials = false;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.EnableSsl = false;
-            client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educ@t|09");
+            client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
             mail.IsBodyHtml = true;
 
             //mail.From = new MailAddress("reports@statewideconsultants.com");
@@ -283,7 +283,7 @@ namespace Dax.Scrapping.Appraisal
           actualStepReport2 = StepsEnum.Steps.Step1;
           actualStepReport3 = StepsEnum.Steps.Step1;
 
-          if (DateTime.Now.Hour == 9)
+          if (DateTime.Now.Hour == 8)
           {
               var scrapper = new ScrapperRestart();
               var school = new SchoolEntities();
@@ -297,16 +297,23 @@ namespace Dax.Scrapping.Appraisal
                   Application.Restart();
               }
           }
-          //just execute the download and send file between 9 and 4
-          if (DateTime.Now.Hour >= 9 && DateTime.Now.Hour < 17  && DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
+          if (DateTime.Now.Hour >= 4 && DateTime.Now.Hour < 17 && DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
           {
                 //Send reports info
                 SaveReports();
                 //Send Emails
                 SendReport1ToEmail("Export Call Report");
+          }
+          //just execute the download and send file between 8 and 4
+          if (DateTime.Now.Hour >= 8 && DateTime.Now.Hour < 17  && DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
+          {
+                //Send reports info
+                SaveReports();
+                //Send Emails
+                //SendReport1ToEmail("Export Call Report");
                 SendReport2ToEmail("MS CA Report");
                 SendReport3ToEmail("MS NC Report");
-            }
+          }
       }
 
     private void InitializeBrouser()
