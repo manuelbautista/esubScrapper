@@ -1,0 +1,2 @@
+﻿
+    $("#dropdownMenu1").click();

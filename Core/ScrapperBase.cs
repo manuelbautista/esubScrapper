@@ -13,15 +13,38 @@ namespace Dax.Scrapping.Appraisal.Core
   public class ScrapperBase
   {
         protected ChromiumWebBrowser _brouserComponent;
+        protected ChromiumWebBrowser _browserQSReportCA;
+        protected ChromiumWebBrowser _browserQSReportNC;
+        protected ChromiumWebBrowser _browserRexReport;
 
-    public ChromiumWebBrowser BrouserComponent
+        public ChromiumWebBrowser BrouserComponent
     {
       get
       {
         return this._brouserComponent;
       }
     }
-
+    public ChromiumWebBrowser BrowserQSReportCA
+        {
+        get
+        {
+            return this._browserQSReportCA;
+        }
+    }
+        public ChromiumWebBrowser BrowserQSReportNC
+        {
+            get
+            {
+                return this._browserQSReportNC;
+            }
+        }
+        public ChromiumWebBrowser BrowserRexReport
+        {
+            get
+            {
+                return this._browserRexReport;
+            }
+        }
     protected void Click(string id)
     {
       this._brouserComponent.ExecuteScriptAsync("(function() {\n                                    document.getElementById('{0}').click();\n                               })();".Replace("{0}", id));

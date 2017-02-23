@@ -10,7 +10,7 @@ namespace Dax.Scrapping.Appraisal
     {
         public enum Steps
         {
-            Step1, Step2, Step3, Step4, Step5
+            Step1, Step2, Step3, Step4, Step5, Step6
         }
 
    }

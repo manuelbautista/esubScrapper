@@ -19,7 +19,29 @@ namespace Dax.Scrapping.Appraisal.Core
     private static AppSettingsReader reader = new AppSettingsReader();
     private static string _serverHub = (string) null;
 
-    public static string ServerHub
+    public static void RemoveReport(string reportName)
+    {
+        var school = new SchoolEntities();
+        var reports = school.DailyEmailReports.ToList().Where(a => a.Date.Equals(DateTime.Now.Date) && a.ReportName.Equals(reportName));
+        foreach (var report in reports)
+        {
+            school.DailyEmailReports.Remove(report);
+        }
+        
+        school.SaveChanges();
+    }
+
+      public static void RemoveNotSent(string reportName)
+      {
+            var school = new SchoolEntities();
+           var reports = school.DailyEmailReports.Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false)).ToList().Where(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals(reportName));
+          foreach (var report in reports)
+          {
+                school.DailyEmailReports.Remove(report);
+          }
+            school.SaveChanges();
+        }
+        public static string ServerHub
     {
       get
       {

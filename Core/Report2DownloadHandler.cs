@@ -30,6 +30,9 @@ namespace Dax.Scrapping.Appraisal.Core
 
                 using (callback)
                 {
+                    //Remove previous report
+                    Helper.RemoveReport("Report2");
+                    //
                     callback.Continue(filePath + downloadItem.SuggestedFileName, showDialog: false);
 
                     var school = new SchoolEntities();
@@ -46,6 +49,7 @@ namespace Dax.Scrapping.Appraisal.Core
                 }
             }
         }
+
 
         public void OnDownloadUpdated(IBrowser browser, DownloadItem downloadItem, IDownloadItemCallback callback)
         {

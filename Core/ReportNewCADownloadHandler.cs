@@ -8,7 +8,7 @@ using CefSharp;
 
 namespace Dax.Scrapping.Appraisal.Core
 {
-    public class ReportDownloadHandler : IDownloadHandler
+    public class ReportNewCADownloadHandler : IDownloadHandler
     {
         private bool FileExists(string fileName)
         {
@@ -17,28 +17,31 @@ namespace Dax.Scrapping.Appraisal.Core
         }
         public void OnBeforeDownload(IBrowser browser, DownloadItem downloadItem, IBeforeDownloadCallback callback)
         {
-            var filePath = @"C:\esubmitter\Reports\Report1\";
+            var filePath = @"C:\esubmitter\Reports\ReportNewCA\";
             if (!Directory.Exists(filePath))
             {
                 Directory.CreateDirectory(filePath);
             }
             if (!callback.IsDisposed)
             {
+                downloadItem.SuggestedFileName = "(CA)" + downloadItem.SuggestedFileName;
+
                 //if (FileExists(downloadItem.SuggestedFileName)) return;
 
                 using (callback)
                 {
-                    callback.Continue(filePath + downloadItem.SuggestedFileName, showDialog: false);
                     //Remove previous report
-                    Helper.RemoveReport("Report1");
+                    Helper.RemoveReport("ReportNewCA");
                     //
+                    callback.Continue(filePath + downloadItem.SuggestedFileName, showDialog: false);
+
                     var school = new SchoolEntities();
                     var daily = new DailyEmailReport
                     {
                         Time = DateTime.Now.ToShortTimeString(),
                         Date = DateTime.Now.Date,
                         Path = filePath + downloadItem.SuggestedFileName,
-                        ReportName = "Report1",
+                        ReportName = "ReportNewCA",
                         Sent = false
                     };
                     school.DailyEmailReports.Add(daily);
@@ -46,6 +49,7 @@ namespace Dax.Scrapping.Appraisal.Core
                 }
             }
         }
+
 
         public void OnDownloadUpdated(IBrowser browser, DownloadItem downloadItem, IDownloadItemCallback callback)
         {

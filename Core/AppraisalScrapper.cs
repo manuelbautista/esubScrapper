@@ -33,9 +33,11 @@ namespace Dax.Scrapping.Appraisal.Core
   public class AppraisalScrapper : ScrapperBase, IDisposable
   {
     private Action _curAction = (Action) null;
-    public Status _curStatus = Status.Paused;
+    public Status _curStatus = Status.Loggin;
     private string _loginUrl = "https://x5adminw.ytel.com/Account/login";
     public string _newAgentsInfoSite = "https://x5adminw.ytel.com/AgentPerformance/estomescustom";
+    public string QSReportLoginURL = "https://qmp.quinstreet.com";
+    public string RexReportLoginURL = "https://login.rextopia.com/";
     private string _user;
     private string _pass;
     private bool isLogged { get; set; }
@@ -45,11 +47,17 @@ namespace Dax.Scrapping.Appraisal.Core
 
     public AppraisalScrapper(string user, string pass)
     {
-      this._user = user;
-      this._pass = pass;
-      this._brouserComponent = new ChromiumWebBrowser(this._loginUrl);
-      this._brouserComponent.LoadingStateChanged += new EventHandler<LoadingStateChangedEventArgs>(this._brouserComponent_LoadingStateChanged);
-      this._curStatus = Status.Loading;
+        this._user = user;
+        this._pass = pass;
+        this._curStatus = Status.Loggin;
+        this._brouserComponent = new ChromiumWebBrowser(this._loginUrl);
+        this._browserQSReportCA = new ChromiumWebBrowser(QSReportLoginURL);
+        this._browserQSReportNC = new ChromiumWebBrowser(QSReportLoginURL);
+        //Rex Report
+        this._browserRexReport = new ChromiumWebBrowser(RexReportLoginURL);
+
+        this._brouserComponent.LoadingStateChanged += new EventHandler<LoadingStateChangedEventArgs>(this._brouserComponent_LoadingStateChanged);
+      
     }
 
     private void LoginUser()

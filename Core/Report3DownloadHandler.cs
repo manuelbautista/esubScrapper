@@ -30,7 +30,9 @@ namespace Dax.Scrapping.Appraisal.Core
                 using (callback)
                 {
                     callback.Continue(filePath + downloadItem.SuggestedFileName, showDialog: false);
-
+                    //Remove previous report
+                    Helper.RemoveReport("Report3");
+                    //
                     var school = new SchoolEntities();
                     var daily = new DailyEmailReport
                     {

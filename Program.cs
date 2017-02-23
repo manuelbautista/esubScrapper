@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CefSharp;
 
 namespace Dax.Scrapping.Appraisal
 {
@@ -17,6 +18,7 @@ namespace Dax.Scrapping.Appraisal
         {
             try
             {
+
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new MainForm());        
