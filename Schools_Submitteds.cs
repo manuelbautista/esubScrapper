@@ -52,5 +52,10 @@ namespace Dax.Scrapping.Appraisal
         public string MCMSubmitteds { get; set; }
         public string MCMSubmittedPrograms { get; set; }
         public Nullable<bool> SendToCallCriteria { get; set; }
+        public Nullable<int> HEGCNewSchoolFoundsQty { get; set; }
+        public string HEGCNewSchoolFounds { get; set; }
+        public Nullable<int> HEGCNewSubmittedQty { get; set; }
+        public string HEGCNewSubmitteds { get; set; }
+        public string HEGCNewSubmittedPrograms { get; set; }
     }
 }

@@ -264,6 +264,14 @@
           <Property Name="doi_degree" Type="varchar" MaxLength="50" />
           <Property Name="doi_rank" Type="int" />
         </EntityType>
+        <EntityType Name="DynamicValues">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Text" Type="nvarchar" MaxLength="250" />
+          <Property Name="Value" Type="nvarchar" MaxLength="250" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'School.dbo.EdSoup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="EdSoup">
@@ -960,6 +968,11 @@ warning 6002: The table/view 'School.dbo.mfp_record' does not have a primary key
           <Property Name="MCMSubmitteds" Type="nvarchar(max)" />
           <Property Name="MCMSubmittedPrograms" Type="nvarchar(max)" />
           <Property Name="SendToCallCriteria" Type="bit" />
+          <Property Name="HEGCNewSchoolFoundsQty" Type="int" />
+          <Property Name="HEGCNewSchoolFounds" Type="nvarchar(max)" />
+          <Property Name="HEGCNewSubmittedQty" Type="int" />
+          <Property Name="HEGCNewSubmitteds" Type="nvarchar(max)" />
+          <Property Name="HEGCNewSubmittedPrograms" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="ScrapperRestart">
           <Key>
@@ -1205,6 +1218,7 @@ warning 6002: The table/view 'School.dbo.tblZips' does not have a primary key de
           <Property Name="MCMAcess" Type="varchar" MaxLength="1" />
           <Property Name="IsActive" Type="bit" />
           <Property Name="Lockout" Type="bit" />
+          <Property Name="HEGCNewAccess" Type="varchar" MaxLength="1" />
         </EntityType>
         <EntityType Name="UsersHistory">
           <Key>
@@ -1313,6 +1327,19 @@ warning 6002: The table/view 'School.dbo.vicidial_list_back' does not have a pri
           <Property Name="user_program" Type="nvarchar" MaxLength="500" />
           <Property Name="user_program_choice" Type="nvarchar" MaxLength="500" />
         </EntityType>
+        <EntityType Name="WatchCodeStepsLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubmitId" Type="int" />
+          <Property Name="ClientTelephone" Type="nvarchar" MaxLength="250" />
+          <Property Name="AgentUser" Type="nvarchar" MaxLength="250" />
+          <Property Name="DateTime" Type="datetime" />
+          <Property Name="ClientFirstName" Type="nvarchar" MaxLength="250" />
+          <Property Name="ClientLastName" Type="nvarchar" MaxLength="250" />
+          <Property Name="Text" Type="nvarchar(max)" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'School.dbo.View_Agents' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="View_Agents">
@@ -1322,6 +1349,20 @@ warning 6002: The table/view 'School.dbo.View_Agents' does not have a primary ke
           <Property Name="USER" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="UserID" Type="int" />
           <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'School.dbo.View_SendToCallCriteria' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_SendToCallCriteria">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="SubmitId" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="SubmitId" Type="int" Nullable="false" />
+          <Property Name="TotalSubmitted" Type="int" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="SendToCallCriteria" Type="bit" />
+          <Property Name="who_submitted" Type="varchar" MaxLength="45" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'School.dbo.vw_aspnet_Applications' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2474,6 +2515,7 @@ warning 6002: The table/view 'School.dbo.vw_aspnet_WebPartState_User' does not h
           <EntitySet Name="Company_Name" EntityType="Self.Company_Name" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyEmailReport" EntityType="Self.DailyEmailReport" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Degree_Of_Interest" EntityType="Self.Degree_Of_Interest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DynamicValues" EntityType="Self.DynamicValues" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ErrorReports" EntityType="Self.ErrorReports" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EsubMapping" EntityType="Self.EsubMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EsubMappingValues" EntityType="Self.EsubMappingValues" Schema="dbo" store:Type="Tables" />
@@ -2503,6 +2545,7 @@ warning 6002: The table/view 'School.dbo.vw_aspnet_WebPartState_User' does not h
           <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsersHistory" EntityType="Self.UsersHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="vicidial_list" EntityType="Self.vicidial_list" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WatchCodeStepsLog" EntityType="Self.WatchCodeStepsLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EdSoup" EntityType="Self.EdSoup" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
 [EdSoup].[EdSoupID] AS [EdSoupID], 
@@ -2791,6 +2834,16 @@ FROM [dbo].[vicidial_list_back] AS [vicidial_list_back]</DefiningQuery>
 [View_Agents].[UserID] AS [UserID], 
 [View_Agents].[IsActive] AS [IsActive]
 FROM [dbo].[View_Agents] AS [View_Agents]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="View_SendToCallCriteria" EntityType="Self.View_SendToCallCriteria" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[View_SendToCallCriteria].[Id] AS [Id], 
+[View_SendToCallCriteria].[SubmitId] AS [SubmitId], 
+[View_SendToCallCriteria].[TotalSubmitted] AS [TotalSubmitted], 
+[View_SendToCallCriteria].[Date] AS [Date], 
+[View_SendToCallCriteria].[SendToCallCriteria] AS [SendToCallCriteria], 
+[View_SendToCallCriteria].[who_submitted] AS [who_submitted]
+FROM [dbo].[View_SendToCallCriteria] AS [View_SendToCallCriteria]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vw_aspnet_Applications" EntityType="Self.vw_aspnet_Applications" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -3618,6 +3671,11 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <Property Name="MCMSubmitteds" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="MCMSubmittedPrograms" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SendToCallCriteria" Type="Boolean" />
+          <Property Name="HEGCNewSchoolFoundsQty" Type="Int32" />
+          <Property Name="HEGCNewSchoolFounds" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HEGCNewSubmittedQty" Type="Int32" />
+          <Property Name="HEGCNewSubmitteds" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HEGCNewSubmittedPrograms" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="submit_record">
           <Key>
@@ -3846,6 +3904,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <Property Name="MCMAcess" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="Lockout" Type="Boolean" />
+          <Property Name="HEGCNewAccess" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="UsersHistory">
           <Key>
@@ -5376,6 +5435,9 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <EntitySet Name="AgentTimestamps" EntityType="SchoolModel.AgentTimestamp" />
           <EntitySet Name="DailyEmailReports" EntityType="SchoolModel.DailyEmailReport" />
           <EntitySet Name="ScrapperRestarts" EntityType="SchoolModel.ScrapperRestart" />
+          <EntitySet Name="WatchCodeStepsLogs" EntityType="SchoolModel.WatchCodeStepsLog" />
+          <EntitySet Name="DynamicValues" EntityType="SchoolModel.DynamicValue" />
+          <EntitySet Name="View_SendToCallCriteria" EntityType="SchoolModel.View_SendToCallCriteria" />
         </EntityContainer>
         <ComplexType Name="aspnet_Membership_GetPassword_Result">
           <Property Type="String" Name="Column1" Nullable="true" MaxLength="128" />
@@ -5833,6 +5895,39 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Date" Type="DateTime" Precision="0" />
           <Property Name="Restarted" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="WatchCodeStepsLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubmitId" Type="Int32" />
+          <Property Name="ClientTelephone" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="AgentUser" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="DateTime" Type="DateTime" Precision="3" />
+          <Property Name="ClientFirstName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ClientLastName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DynamicValue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="View_SendToCallCriteria">
+          <Key>
+            <PropertyRef Name="SubmitId" />
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="SubmitId" Type="Int32" Nullable="false" />
+          <Property Name="TotalSubmitted" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="SendToCallCriteria" Type="Boolean" />
+          <Property Name="who_submitted" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6485,6 +6580,11 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <EntitySetMapping Name="Schools_Submitteds">
             <EntityTypeMapping TypeName="SchoolModel.Schools_Submitteds">
               <MappingFragment StoreEntitySet="Schools_Submitteds">
+                <ScalarProperty Name="HEGCNewSubmittedPrograms" ColumnName="HEGCNewSubmittedPrograms" />
+                <ScalarProperty Name="HEGCNewSubmitteds" ColumnName="HEGCNewSubmitteds" />
+                <ScalarProperty Name="HEGCNewSubmittedQty" ColumnName="HEGCNewSubmittedQty" />
+                <ScalarProperty Name="HEGCNewSchoolFounds" ColumnName="HEGCNewSchoolFounds" />
+                <ScalarProperty Name="HEGCNewSchoolFoundsQty" ColumnName="HEGCNewSchoolFoundsQty" />
                 <ScalarProperty Name="SendToCallCriteria" ColumnName="SendToCallCriteria" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SubmitId" ColumnName="SubmitId" />
@@ -6728,6 +6828,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="SchoolModel.user">
               <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="HEGCNewAccess" ColumnName="HEGCNewAccess" />
                 <ScalarProperty Name="Lockout" ColumnName="Lockout" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="username" ColumnName="username" />
@@ -7908,6 +8009,41 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
                 <ScalarProperty Name="Restarted" ColumnName="Restarted" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WatchCodeStepsLogs">
+            <EntityTypeMapping TypeName="SchoolModel.WatchCodeStepsLog">
+              <MappingFragment StoreEntitySet="WatchCodeStepsLog">
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="ClientLastName" ColumnName="ClientLastName" />
+                <ScalarProperty Name="ClientFirstName" ColumnName="ClientFirstName" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="AgentUser" ColumnName="AgentUser" />
+                <ScalarProperty Name="ClientTelephone" ColumnName="ClientTelephone" />
+                <ScalarProperty Name="SubmitId" ColumnName="SubmitId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DynamicValues">
+            <EntityTypeMapping TypeName="SchoolModel.DynamicValue">
+              <MappingFragment StoreEntitySet="DynamicValues">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_SendToCallCriteria">
+            <EntityTypeMapping TypeName="SchoolModel.View_SendToCallCriteria">
+              <MappingFragment StoreEntitySet="View_SendToCallCriteria">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="who_submitted" ColumnName="who_submitted" />
+                <ScalarProperty Name="SendToCallCriteria" ColumnName="SendToCallCriteria" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="TotalSubmitted" ColumnName="TotalSubmitted" />
+                <ScalarProperty Name="SubmitId" ColumnName="SubmitId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

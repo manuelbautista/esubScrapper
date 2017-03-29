@@ -87,6 +87,9 @@
         <EntityTypeShape EntityType="SchoolModel.AgentTimestamp" Width="1.5" PointX="0.75" PointY="28.75" />
         <EntityTypeShape EntityType="SchoolModel.DailyEmailReport" Width="1.5" PointX="18.375" PointY="28.75" />
         <EntityTypeShape EntityType="SchoolModel.ScrapperRestart" Width="1.5" PointX="28.375" PointY="22.75" />
+        <EntityTypeShape EntityType="SchoolModel.WatchCodeStepsLog" Width="1.5" PointX="28.375" PointY="25.75" />
+        <EntityTypeShape EntityType="SchoolModel.DynamicValue" Width="1.5" PointX="29.375" PointY="0.75" />
+        <EntityTypeShape EntityType="SchoolModel.View_SendToCallCriteria" Width="1.5" PointX="29.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

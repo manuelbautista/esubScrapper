@@ -19,6 +19,22 @@ namespace Dax.Scrapping.Appraisal.Core
     private static AppSettingsReader reader = new AppSettingsReader();
     private static string _serverHub = (string) null;
 
+      public static void SaveErrorMessage(string errorMsg)
+      {
+          WatchCodeStepsLog log = new WatchCodeStepsLog();
+            var school = new SchoolEntities();
+         log.DateTime = DateTime.Now;
+          log.AgentUser = "Scrapper";
+          log.ClientFirstName = string.Empty;
+          log.ClientLastName = string.Empty;
+          log.ClientTelephone = string.Empty;
+          log.SubmitId = 0;
+          log.Text = errorMsg;
+
+          school.WatchCodeStepsLogs.Add(log);
+          school.SaveChanges();
+
+      }
     public static void RemoveReport(string reportName)
     {
         var school = new SchoolEntities();

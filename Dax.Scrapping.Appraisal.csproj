@@ -207,6 +207,9 @@
     <Compile Include="Download_RecordingURL_Result.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="DynamicValue.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="EdSoup.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -414,6 +417,9 @@
     <Compile Include="View_Agents.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="View_SendToCallCriteria.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="vw_aspnet_Applications.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -439,6 +445,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="vw_aspnet_WebPartState_User.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WatchCodeStepsLog.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
   </ItemGroup>

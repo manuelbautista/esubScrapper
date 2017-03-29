@@ -4,8 +4,13 @@ var day = d.getDate();
 var year = d.getFullYear();
 
 if (day == 1) {
-    month = month - 1;
-    day = 31;
+    dateObj = new Date();
+    dateObj.setDate(dateObj.getDate() - 1);
+    //set previous date
+    month = dateObj.getMonth() + 1;
+    day = dateObj.getDate();
+    year = d.getFullYear();
+    //
 }
 else {
     day = day - 1;

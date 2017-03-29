@@ -12,6 +12,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data.Entity.Migrations;
 using System.Drawing;
 using System.IO;
@@ -158,7 +159,352 @@ namespace Dax.Scrapping.Appraisal
 
             if (report == null)
                 return;
+            if (report.Sent.HasValue && report.Sent.Value)
+                return;
+            try
+            {
+                //MailMessage mail = new MailMessage();
+                MailMessage mail = new MailMessage("reports@statewideconsultants.com",
+                    "reports@statewideconsultants.com");
+                System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
+                client.Host = "smtpout.secureserver.net";
 
+                client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
+                client.UseDefaultCredentials = false;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.EnableSsl = false;
+                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
+                mail.IsBodyHtml = true;
+
+                //mail.From = new MailAddress("reports@statewideconsultants.com");
+                //mail.To.Add("b0hcoder@gmail.com");
+                mail.Subject = subject;
+                mail.Body = "mail with attachment";
+                mail.IsBodyHtml = true;
+                System.Net.Mail.Attachment attachment;
+                attachment = new System.Net.Mail.Attachment(report.Path);
+                mail.Attachments.Add(attachment);
+
+                report.Sent = true;
+                daily.DailyEmailReports.AddOrUpdate(report);
+                daily.SaveChanges();
+
+                client.Send(mail);
+                //Remove duplicate reports
+                Helper.RemoveNotSent("ReportRex");
+            }
+            catch (Exception ex)
+            {
+                Helper.RemoveNotSent("ReportRex");
+            }
+
+        }
+        private void SendReportNewNCToEmail(string subject)
+        {
+            //send the first Report
+            var daily = new SchoolEntities();
+            var report = daily.DailyEmailReports.Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false)).ToList().FirstOrDefault(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("ReportNewNC"));
+
+            if (report == null)
+                return;
+            if (report.Sent.HasValue && report.Sent.Value)
+                return;
+            try
+            {
+                //MailMessage mail = new MailMessage();
+                MailMessage mail = new MailMessage("reports@statewideconsultants.com",
+                    "reports@statewideconsultants.com");
+                System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
+                client.Host = "smtpout.secureserver.net";
+
+                client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
+                client.UseDefaultCredentials = false;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.EnableSsl = false;
+                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
+                mail.IsBodyHtml = true;
+
+                //mail.From = new MailAddress("reports@statewideconsultants.com");
+                //mail.To.Add("b0hcoder@gmail.com");
+                mail.Subject = subject;
+                mail.Body = "mail with attachment";
+                mail.IsBodyHtml = true;
+                System.Net.Mail.Attachment attachment;
+                attachment = new System.Net.Mail.Attachment(report.Path);
+                mail.Attachments.Add(attachment);
+
+                report.Sent = true;
+                daily.DailyEmailReports.AddOrUpdate(report);
+                daily.SaveChanges();
+
+                client.Send(mail);
+                //Remove duplicate reports
+                Helper.RemoveNotSent("ReportNewNC");
+            }
+            catch (Exception ex)
+            {
+                Helper.RemoveNotSent("ReportNewNC");
+            }
+        }
+        private void SendReportNewCAToEmail(string subject)
+        {
+            //send the first Report
+            var daily = new SchoolEntities();
+            var report = daily.DailyEmailReports.Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false)).ToList().FirstOrDefault(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("ReportNewCA"));
+
+            if (report == null)
+                return;
+            if (report.Sent.HasValue && report.Sent.Value)
+                return;
+            try
+            {
+                //MailMessage mail = new MailMessage();
+                MailMessage mail = new MailMessage("reports@statewideconsultants.com",
+                    "reports@statewideconsultants.com");
+                System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
+                client.Host = "smtpout.secureserver.net";
+
+                client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
+                client.UseDefaultCredentials = false;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.EnableSsl = false;
+                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
+                mail.IsBodyHtml = true;
+
+                //mail.From = new MailAddress("reports@statewideconsultants.com");
+                //mail.To.Add("b0hcoder@gmail.com");
+                mail.Subject = subject;
+                mail.Body = "mail with attachment";
+                mail.IsBodyHtml = true;
+                System.Net.Mail.Attachment attachment;
+                attachment = new System.Net.Mail.Attachment(report.Path);
+                mail.Attachments.Add(attachment);
+
+                report.Sent = true;
+                daily.DailyEmailReports.AddOrUpdate(report);
+                daily.SaveChanges();
+
+                client.Send(mail);
+                //Remove duplicate reports
+                Helper.RemoveNotSent("ReportNewCA");
+            }
+            catch (Exception ex)
+            {
+                Helper.RemoveNotSent("ReportNewCA");
+            }
+        }
+        private void SendReportQSCAToEmail(string subject)
+      {
+          var daily = new SchoolEntities();
+          var report =
+              daily.DailyEmailReports
+                  .Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false))
+                  .ToList(
+                      ).FirstOrDefault(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("ReportQSCA"));
+          if (report == null)
+              return;
+          if (report.Sent.HasValue && report.Sent.Value)
+              return;
+          try
+          {
+              //MailMessage mail = new MailMessage();
+              MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
+              System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
+              client.Host = "smtpout.secureserver.net";
+
+              client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
+              client.UseDefaultCredentials = false;
+              client.DeliveryMethod = SmtpDeliveryMethod.Network;
+              client.EnableSsl = false;
+              client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
+              mail.IsBodyHtml = true;
+
+              //mail.From = new MailAddress("reports@statewideconsultants.com");
+              //mail.To.Add("b0hcoder@gmail.com");
+              mail.Subject = subject;
+              mail.Body = "mail with attachment";
+              mail.IsBodyHtml = true;
+              System.Net.Mail.Attachment attachment;
+              attachment = new System.Net.Mail.Attachment(report.Path);
+              mail.Attachments.Add(attachment);
+
+              report.Sent = true;
+              daily.DailyEmailReports.AddOrUpdate(report);
+              daily.SaveChanges();
+
+              client.Send(mail);
+              //Remove duplicate reports
+              Helper.RemoveNotSent("ReportQSCA");
+          }
+          catch (Exception ex)
+          {
+                Helper.RemoveNotSent("ReportQSCA");
+        }
+      }
+
+      private void SendReportQSNCToEmail(string subject)
+      {
+          var daily = new SchoolEntities();
+          var report =
+              daily.DailyEmailReports
+                  .Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false))
+                  .ToList(
+                      ).FirstOrDefault(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("ReportQSNC"));
+
+          if (report == null)
+              return;
+
+            if (report.Sent.HasValue && report.Sent.Value)
+                return;
+            try
+          {
+              //MailMessage mail = new MailMessage();
+              MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
+              System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
+              client.Host = "smtpout.secureserver.net";
+
+              client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
+              client.UseDefaultCredentials = false;
+              client.DeliveryMethod = SmtpDeliveryMethod.Network;
+              client.EnableSsl = false;
+              client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
+              mail.IsBodyHtml = true;
+
+              //mail.From = new MailAddress("reports@statewideconsultants.com");
+              //mail.To.Add("b0hcoder@gmail.com");
+              mail.Subject = subject;
+              mail.Body = "mail with attachment";
+              mail.IsBodyHtml = true;
+              System.Net.Mail.Attachment attachment;
+              attachment = new System.Net.Mail.Attachment(report.Path);
+              mail.Attachments.Add(attachment);
+
+              report.Sent = true;
+              daily.DailyEmailReports.AddOrUpdate(report);
+              daily.SaveChanges();
+
+              client.Send(mail);
+              //Remove duplicate reports
+              Helper.RemoveNotSent("ReportQSNC");
+          }
+          catch (Exception ex)
+          {
+                Helper.RemoveNotSent("ReportQSNC");
+        }
+
+      }
+
+      private void SendReport3ToEmail(string subject)
+        {
+            //send the first Report
+            var daily = new SchoolEntities();
+            var report = daily.DailyEmailReports.Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false)).ToList().FirstOrDefault(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report3"));
+
+            if (report == null)
+                return;
+
+            if (report.Sent.HasValue && report.Sent.Value)
+                return;
+            try
+            {
+                //MailMessage mail = new MailMessage();
+                MailMessage mail = new MailMessage("reports@statewideconsultants.com",
+                    "reports@statewideconsultants.com");
+                System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
+                client.Host = "smtpout.secureserver.net";
+
+                client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
+                client.UseDefaultCredentials = false;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.EnableSsl = false;
+                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
+                mail.IsBodyHtml = true;
+
+                //mail.From = new MailAddress("reports@statewideconsultants.com");
+                //mail.To.Add("b0hcoder@gmail.com");
+                mail.Subject = subject;
+                mail.Body = "mail with attachment";
+                mail.IsBodyHtml = true;
+                System.Net.Mail.Attachment attachment;
+                attachment = new System.Net.Mail.Attachment(report.Path);
+                mail.Attachments.Add(attachment);
+
+                report.Sent = true;
+                daily.DailyEmailReports.AddOrUpdate(report);
+                daily.SaveChanges();
+
+                client.Send(mail);
+                //Remove duplicate reports
+                Helper.RemoveNotSent("Report3");
+            }
+            catch (Exception ex)
+            {
+                // ignored
+                Helper.RemoveNotSent("Report3");
+            }
+        }
+
+        private void SendReport2ToEmail(string subject)
+        {
+            //send the first Report
+            var daily = new SchoolEntities();
+            var report = daily.DailyEmailReports.Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false)).ToList().FirstOrDefault(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report2"));
+
+            if (report == null)
+                return;
+            if (report.Sent.HasValue && report.Sent.Value)
+                return;
+            try
+            {
+                //MailMessage mail = new MailMessage();
+                MailMessage mail = new MailMessage("reports@statewideconsultants.com",
+                    "reports@statewideconsultants.com");
+                System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
+                client.Host = "smtpout.secureserver.net";
+
+                client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
+                client.UseDefaultCredentials = false;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.EnableSsl = false;
+                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
+                mail.IsBodyHtml = true;
+
+                //mail.From = new MailAddress("reports@statewideconsultants.com");
+                //mail.To.Add("b0hcoder@gmail.com");
+                mail.Subject = subject;
+                mail.Body = "mail with attachment";
+                mail.IsBodyHtml = true;
+                System.Net.Mail.Attachment attachment;
+                attachment = new System.Net.Mail.Attachment(report.Path);
+                mail.Attachments.Add(attachment);
+
+                report.Sent = true;
+                daily.DailyEmailReports.AddOrUpdate(report);
+                daily.SaveChanges();
+
+                client.Send(mail);
+                //Remove duplicate reports
+                Helper.RemoveNotSent("Report2");
+            }
+            catch (Exception ex)
+            {
+                Helper.RemoveNotSent("Report2");
+            }
+        }
+
+        private void SendReport1ToEmail(string subject)
+    {
+        //send the first Report
+        var daily = new SchoolEntities();
+        var report = daily.DailyEmailReports.Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false)).ToList().FirstOrDefault(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report1"));
+
+        if (report == null)
+            return;
+        if (report.Sent.HasValue && report.Sent.Value)
+            return;
+
+            try
+        {
             //MailMessage mail = new MailMessage();
             MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
             System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
@@ -186,284 +532,12 @@ namespace Dax.Scrapping.Appraisal
 
             client.Send(mail);
             //Remove duplicate reports
-            Helper.RemoveNotSent("ReportRex");
-
-        }
-        private void SendReportNewNCToEmail(string subject)
-        {
-            //send the first Report
-            var daily = new SchoolEntities();
-            var report = daily.DailyEmailReports.Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false)).ToList().FirstOrDefault(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("ReportNewNC"));
-
-            if (report == null)
-                return;
-
-            //MailMessage mail = new MailMessage();
-            MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
-            System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
-            client.Host = "smtpout.secureserver.net";
-
-            client.Port = 3535;  //Tried 80, 3535, 25, 465 (SSL)
-            client.UseDefaultCredentials = false;
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.EnableSsl = false;
-            client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
-            mail.IsBodyHtml = true;
-
-            //mail.From = new MailAddress("reports@statewideconsultants.com");
-            //mail.To.Add("b0hcoder@gmail.com");
-            mail.Subject = subject;
-            mail.Body = "mail with attachment";
-            mail.IsBodyHtml = true;
-            System.Net.Mail.Attachment attachment;
-            attachment = new System.Net.Mail.Attachment(report.Path);
-            mail.Attachments.Add(attachment);
-
-            report.Sent = true;
-            daily.DailyEmailReports.AddOrUpdate(report);
-            daily.SaveChanges();
-
-            client.Send(mail);
-            //Remove duplicate reports
-            Helper.RemoveNotSent("ReportNewNC");
-        }
-        private void SendReportNewCAToEmail(string subject)
-        {
-            //send the first Report
-            var daily = new SchoolEntities();
-            var report = daily.DailyEmailReports.Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false)).ToList().FirstOrDefault(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("ReportNewCA"));
-
-            if (report == null)
-                return;
-
-            //MailMessage mail = new MailMessage();
-            MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
-            System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
-            client.Host = "smtpout.secureserver.net";
-
-            client.Port = 3535;  //Tried 80, 3535, 25, 465 (SSL)
-            client.UseDefaultCredentials = false;
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.EnableSsl = false;
-            client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
-            mail.IsBodyHtml = true;
-
-            //mail.From = new MailAddress("reports@statewideconsultants.com");
-            //mail.To.Add("b0hcoder@gmail.com");
-            mail.Subject = subject;
-            mail.Body = "mail with attachment";
-            mail.IsBodyHtml = true;
-            System.Net.Mail.Attachment attachment;
-            attachment = new System.Net.Mail.Attachment(report.Path);
-            mail.Attachments.Add(attachment);
-
-            report.Sent = true;
-            daily.DailyEmailReports.AddOrUpdate(report);
-            daily.SaveChanges();
-
-            client.Send(mail);
-            //Remove duplicate reports
-            Helper.RemoveNotSent("ReportNewCA");
-        }
-        private void SendReportQSCAToEmail(string subject)
-      {
-          var daily = new SchoolEntities();
-          var report =
-              daily.DailyEmailReports
-                  .Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false))
-                  .ToList(
-                      ).FirstOrDefault(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("ReportQSCA"));
-            if (report == null)
-                return;
-              //MailMessage mail = new MailMessage();
-              MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
-              System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
-              client.Host = "smtpout.secureserver.net";
-
-              client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
-              client.UseDefaultCredentials = false;
-              client.DeliveryMethod = SmtpDeliveryMethod.Network;
-              client.EnableSsl = false;
-              client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
-              mail.IsBodyHtml = true;
-
-              //mail.From = new MailAddress("reports@statewideconsultants.com");
-              //mail.To.Add("b0hcoder@gmail.com");
-              mail.Subject = subject;
-              mail.Body = "mail with attachment";
-              mail.IsBodyHtml = true;
-              System.Net.Mail.Attachment attachment;
-              attachment = new System.Net.Mail.Attachment(report.Path);
-              mail.Attachments.Add(attachment);
-
-              report.Sent = true;
-              daily.DailyEmailReports.AddOrUpdate(report);
-              daily.SaveChanges();
-
-              client.Send(mail);
-            //Remove duplicate reports
-            Helper.RemoveNotSent("ReportQSCA");
-        }
-
-      private void SendReportQSNCToEmail(string subject)
-      {
-          var daily = new SchoolEntities();
-          var report =
-              daily.DailyEmailReports
-                  .Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false))
-                  .ToList(
-                      ).FirstOrDefault(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("ReportQSNC"));
-
-          if (report == null)
-              return;
-
-              //MailMessage mail = new MailMessage();
-              MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
-              System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
-              client.Host = "smtpout.secureserver.net";
-
-              client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
-              client.UseDefaultCredentials = false;
-              client.DeliveryMethod = SmtpDeliveryMethod.Network;
-              client.EnableSsl = false;
-              client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
-              mail.IsBodyHtml = true;
-
-              //mail.From = new MailAddress("reports@statewideconsultants.com");
-              //mail.To.Add("b0hcoder@gmail.com");
-              mail.Subject = subject;
-              mail.Body = "mail with attachment";
-              mail.IsBodyHtml = true;
-              System.Net.Mail.Attachment attachment;
-              attachment = new System.Net.Mail.Attachment(report.Path);
-              mail.Attachments.Add(attachment);
-
-              report.Sent = true;
-              daily.DailyEmailReports.AddOrUpdate(report);
-              daily.SaveChanges();
-
-              client.Send(mail);
-            //Remove duplicate reports
-            Helper.RemoveNotSent("ReportQSNC");
-
-        }
-
-      private void SendReport3ToEmail(string subject)
-        {
-            //send the first Report
-            var daily = new SchoolEntities();
-            var report = daily.DailyEmailReports.Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false)).ToList().FirstOrDefault(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report3"));
-
-            if (report == null)
-                return;
-
-                //MailMessage mail = new MailMessage();
-                MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
-                System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
-                client.Host = "smtpout.secureserver.net";
-
-                client.Port = 3535;  //Tried 80, 3535, 25, 465 (SSL)
-                client.UseDefaultCredentials = false;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.EnableSsl = false;
-                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
-                mail.IsBodyHtml = true;
-                 
-                //mail.From = new MailAddress("reports@statewideconsultants.com");
-                //mail.To.Add("b0hcoder@gmail.com");
-                mail.Subject = subject;
-                mail.Body = "mail with attachment";
-                mail.IsBodyHtml = true;
-                System.Net.Mail.Attachment attachment;
-                attachment = new System.Net.Mail.Attachment(report.Path);
-                mail.Attachments.Add(attachment);
-
-                report.Sent = true;
-                daily.DailyEmailReports.AddOrUpdate(report);
-                daily.SaveChanges();
-
-                client.Send(mail);
-            //Remove duplicate reports
-            Helper.RemoveNotSent("Report3");
-
-        }
-
-        private void SendReport2ToEmail(string subject)
-        {
-            //send the first Report
-            var daily = new SchoolEntities();
-            var report = daily.DailyEmailReports.Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false)).ToList().FirstOrDefault(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report2"));
-
-            if (report == null)
-                return;
-
-                //MailMessage mail = new MailMessage();
-                MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
-                System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
-                client.Host = "smtpout.secureserver.net";
-
-                client.Port = 3535;  //Tried 80, 3535, 25, 465 (SSL)
-                client.UseDefaultCredentials = false;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.EnableSsl = false;
-                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
-                mail.IsBodyHtml = true;
-
-                //mail.From = new MailAddress("reports@statewideconsultants.com");
-                //mail.To.Add("b0hcoder@gmail.com");
-                mail.Subject = subject;
-                mail.Body = "mail with attachment";
-                mail.IsBodyHtml = true;
-                System.Net.Mail.Attachment attachment;
-                attachment = new System.Net.Mail.Attachment(report.Path);
-                mail.Attachments.Add(attachment);
-
-                report.Sent = true;
-                daily.DailyEmailReports.AddOrUpdate(report);
-                daily.SaveChanges();
-
-                client.Send(mail);
-            //Remove duplicate reports
-            Helper.RemoveNotSent("Report2");
-        }
-
-        private void SendReport1ToEmail(string subject)
-    {
-        //send the first Report
-        var daily = new SchoolEntities();
-        var report = daily.DailyEmailReports.Where(a => a.Sent.HasValue && a.Sent.Value.Equals(false)).ToList().FirstOrDefault(a => a.Date.HasValue && a.Date.Value.Equals(DateTime.Now.Date) && a.ReportName.Equals("Report1"));
-
-        if (report == null)
-            return;
-
-            //MailMessage mail = new MailMessage();
-            MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
-                System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
-            client.Host = "smtpout.secureserver.net";
-
-            client.Port = 3535;  //Tried 80, 3535, 25, 465 (SSL)
-            client.UseDefaultCredentials = false;
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.EnableSsl = false;
-            client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
-            mail.IsBodyHtml = true;
-
-            //mail.From = new MailAddress("reports@statewideconsultants.com");
-            //mail.To.Add("b0hcoder@gmail.com");
-            mail.Subject = subject;
-            mail.Body = "mail with attachment";
-            mail.IsBodyHtml = true;
-            System.Net.Mail.Attachment attachment;
-            attachment = new System.Net.Mail.Attachment(report.Path);
-            mail.Attachments.Add(attachment);
-
-            report.Sent = true;
-            daily.DailyEmailReports.AddOrUpdate(report);
-            daily.SaveChanges();
-
-            client.Send(mail);
-            //Remove duplicate reports
             Helper.RemoveNotSent("Report1");
+        }
+        catch (Exception ex)
+        {
+            Helper.RemoveNotSent("Report1");
+        }
     }
 
     private void MainForm_Load(object sender, EventArgs e)
@@ -565,7 +639,7 @@ namespace Dax.Scrapping.Appraisal
             ReportQSCount = 0;
             ReportQSNCCount = 0;
 
-            if (DateTime.Now.Hour >= 4 && DateTime.Now.Hour < 8 && DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
+            if (RunReport1())
             {
                 //Send reports info
                 SaveReport1();
@@ -573,7 +647,7 @@ namespace Dax.Scrapping.Appraisal
                 SendReport1ToEmail("Export Call Report");
             }
             //just execute the download and send file between 8 and 4
-            if (DateTime.Now.Hour >= 8 && DateTime.Now.Hour < 19 && DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
+            if (RunReport())
             {
                 //Send reports info
                 SaveReports();
@@ -591,12 +665,58 @@ namespace Dax.Scrapping.Appraisal
 
             }
         }
+
+      private bool RunReport1()
+      {
+          bool send = false;
+          send = (DateTime.Now.Hour > 4 && DateTime.Now.Hour < 8 && DateTime.Now.DayOfWeek != DayOfWeek.Sunday);
+          if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
+          {
+              if (DateTime.Now.Hour > 7)
+              {
+                  send = false;
+              }
+          }
+          return send;
+      }
+      private bool RunReport()
+      {
+          bool send = false;
+          send = (DateTime.Now.Hour >= 8 && DateTime.Now.Hour < 18 && DateTime.Now.DayOfWeek != DayOfWeek.Sunday);
+          if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
+          {
+              if (DateTime.Now.Hour > 8)
+              {
+                  send = false;
+              }
+          }
+          return send;
+      }
       private void ATimer_Elapsed(object sender, ElapsedEventArgs e)
       {
-            //Restart the application
-            Application.Restart();
-        }
+          if (RestarApp())
+          {
+              //Send info to call criteria
+              SendCallCriteriaPush();
+              //
+              //Restart the application
+              Application.Restart();
+          }
+      }
 
+      private bool RestarApp()
+      {
+            bool send = (DateTime.Now.Hour > 4 && DateTime.Now.Hour < 20 && DateTime.Now.DayOfWeek != DayOfWeek.Sunday);
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
+            {
+                if (DateTime.Now.Hour > 2)
+                {
+                    send = false;
+                }
+            }
+
+          return send;
+      }
     private void InitializeBrouser()
     {
     }
@@ -683,15 +803,79 @@ namespace Dax.Scrapping.Appraisal
             }));
 
                 //Send reports info
-
               SearchAndDownloadReport();
+
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Helper.SaveErrorMessage(ex.Message);
+            Application.Restart();
+            //MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
+        public bool PushEsto(int id)
+        {
+            SchoolEntities school = new SchoolEntities();
 
+            //var submit = school.Schools_Submitteds.FirstOrDefault(a => a.SubmitId.Equals(id));
+            //if (submit != null)
+            //{
+            //    submit.SendToCallCriteria = true;
+            //    school.Schools_Submitteds.AddOrUpdate(submit);
+            //    school.SaveChanges();
+            //}
+            return school.PushEsto(id) > 0;
+        }
+
+      public bool MarkAsSentToCallCriteria(int schoolSubmittedId)
+      {
+          SchoolEntities school = new SchoolEntities();
+          var data = school.Schools_Submitteds.FirstOrDefault(a => a.Id.Equals(schoolSubmittedId));
+          if (data == null) return false;
+
+          data.SendToCallCriteria = true;
+          school.Schools_Submitteds.AddOrUpdate(data);
+
+          return school.SaveChanges() > 0;
+      } 
+
+        /// <summary>
+        /// Send info to call criteria
+        /// </summary>
+        public void SendCallCriteriaPush()
+      {
+          SchoolEntities school = new SchoolEntities();
+          var minutes = 0;
+          var days = 0;
+           var dataList = school.View_SendToCallCriteria.ToList().Where(a => a.Date.HasValue && a.Date.Value.Date.Equals(DateTime.Now.Date)).ToList();
+          var actualHour = DateTime.Now.Hour;
+          foreach (var data in dataList)
+          {
+               var isTest = isTestUser(data.who_submitted);
+              if (data.Date != null)
+              {
+                  TimeSpan span = (DateTime.Now - data.Date.Value);
+                  minutes = span.Minutes;
+                  days = span.Days;
+              }
+
+                //Push to Call Criteria
+                if (!isTest && (minutes >= 15 || days > 0 || actualHour > 20) )
+                {
+                    var pushed = PushEsto(data.SubmitId);
+                    MarkAsSentToCallCriteria(data.Id);
+                }
+            }
+      }
+
+      private bool isTestUser(string username)
+      {
+          var users = ConfigurationManager.AppSettings["TestUser"].ToLower().Split(',');
+          var userLower = username.ToLower();
+          var isTest = users.Contains(userLower);
+
+          return isTest;
+      }
       private void SaveReport1()
       {
 
