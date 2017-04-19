@@ -57,5 +57,6 @@ namespace Dax.Scrapping.Appraisal
         public Nullable<int> HEGCNewSubmittedQty { get; set; }
         public string HEGCNewSubmitteds { get; set; }
         public string HEGCNewSubmittedPrograms { get; set; }
+        public Nullable<bool> PushCallCriteriaError { get; set; }
     }
 }

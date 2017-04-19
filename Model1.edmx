@@ -973,6 +973,7 @@ warning 6002: The table/view 'School.dbo.mfp_record' does not have a primary key
           <Property Name="HEGCNewSubmittedQty" Type="int" />
           <Property Name="HEGCNewSubmitteds" Type="nvarchar(max)" />
           <Property Name="HEGCNewSubmittedPrograms" Type="nvarchar(max)" />
+          <Property Name="PushCallCriteriaError" Type="bit" />
         </EntityType>
         <EntityType Name="ScrapperRestart">
           <Key>
@@ -1363,6 +1364,7 @@ warning 6002: The table/view 'School.dbo.View_SendToCallCriteria' does not have 
           <Property Name="Date" Type="datetime" />
           <Property Name="SendToCallCriteria" Type="bit" />
           <Property Name="who_submitted" Type="varchar" MaxLength="45" />
+          <Property Name="PushCallCriteriaError" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'School.dbo.vw_aspnet_Applications' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -2842,7 +2844,8 @@ FROM [dbo].[View_Agents] AS [View_Agents]</DefiningQuery>
 [View_SendToCallCriteria].[TotalSubmitted] AS [TotalSubmitted], 
 [View_SendToCallCriteria].[Date] AS [Date], 
 [View_SendToCallCriteria].[SendToCallCriteria] AS [SendToCallCriteria], 
-[View_SendToCallCriteria].[who_submitted] AS [who_submitted]
+[View_SendToCallCriteria].[who_submitted] AS [who_submitted], 
+[View_SendToCallCriteria].[PushCallCriteriaError] AS [PushCallCriteriaError]
 FROM [dbo].[View_SendToCallCriteria] AS [View_SendToCallCriteria]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vw_aspnet_Applications" EntityType="Self.vw_aspnet_Applications" store:Type="Views" store:Schema="dbo">
@@ -3676,6 +3679,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <Property Name="HEGCNewSubmittedQty" Type="Int32" />
           <Property Name="HEGCNewSubmitteds" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="HEGCNewSubmittedPrograms" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PushCallCriteriaError" Type="Boolean" />
         </EntityType>
         <EntityType Name="submit_record">
           <Key>
@@ -5928,6 +5932,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <Property Name="SendToCallCriteria" Type="Boolean" />
           <Property Name="who_submitted" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="PushCallCriteriaError" Type="Boolean" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -6580,6 +6585,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <EntitySetMapping Name="Schools_Submitteds">
             <EntityTypeMapping TypeName="SchoolModel.Schools_Submitteds">
               <MappingFragment StoreEntitySet="Schools_Submitteds">
+                <ScalarProperty Name="PushCallCriteriaError" ColumnName="PushCallCriteriaError" />
                 <ScalarProperty Name="HEGCNewSubmittedPrograms" ColumnName="HEGCNewSubmittedPrograms" />
                 <ScalarProperty Name="HEGCNewSubmitteds" ColumnName="HEGCNewSubmitteds" />
                 <ScalarProperty Name="HEGCNewSubmittedQty" ColumnName="HEGCNewSubmittedQty" />
@@ -8038,6 +8044,7 @@ FROM [dbo].[vw_aspnet_WebPartState_User] AS [vw_aspnet_WebPartState_User]</Defin
           <EntitySetMapping Name="View_SendToCallCriteria">
             <EntityTypeMapping TypeName="SchoolModel.View_SendToCallCriteria">
               <MappingFragment StoreEntitySet="View_SendToCallCriteria">
+                <ScalarProperty Name="PushCallCriteriaError" ColumnName="PushCallCriteriaError" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="who_submitted" ColumnName="who_submitted" />
                 <ScalarProperty Name="SendToCallCriteria" ColumnName="SendToCallCriteria" />

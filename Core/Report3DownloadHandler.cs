@@ -10,6 +10,21 @@ namespace Dax.Scrapping.Appraisal.Core
 {
     public class Report3DownloadHandler : IDownloadHandler
     {
+        public string filePath
+        {
+            get
+            {
+                var filePath = @"C:\esubmitter\Reports\Report3\";
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
+                }
+                return filePath;
+            }
+        }
+
+        public string fileName { get; set; }
+
         private bool FileExists(string fileName)
         {
             var school = new SchoolEntities();
@@ -17,40 +32,40 @@ namespace Dax.Scrapping.Appraisal.Core
         }
         public void OnBeforeDownload(IBrowser browser, DownloadItem downloadItem, IBeforeDownloadCallback callback)
         {
-            var filePath = @"C:\esubmitter\Reports\Report3\";
-            if (!Directory.Exists(filePath))
-            {
-                Directory.CreateDirectory(filePath);
-            }
+
             if (!callback.IsDisposed)
             {
                 downloadItem.SuggestedFileName = "(NC)" + downloadItem.SuggestedFileName;
-                //if (FileExists(downloadItem.SuggestedFileName)) return;
+                fileName = downloadItem.SuggestedFileName;
 
                 using (callback)
                 {
                     callback.Continue(filePath + downloadItem.SuggestedFileName, showDialog: false);
-                    //Remove previous report
-                    Helper.RemoveReport("Report3");
-                    //
-                    var school = new SchoolEntities();
-                    var daily = new DailyEmailReport
-                    {
-                        Time = DateTime.Now.ToShortTimeString(),
-                        Date = DateTime.Now.Date,
-                        Path = filePath + downloadItem.SuggestedFileName,
-                        ReportName = "Report3",
-                        Sent = false
-                    };
-                    school.DailyEmailReports.Add(daily);
-                    school.SaveChanges();
+
                 }
             }
         }
 
         public void OnDownloadUpdated(IBrowser browser, DownloadItem downloadItem, IDownloadItemCallback callback)
         {
-            //throw new NotImplementedException();
+
+            if (downloadItem.IsComplete)
+            {
+                //Remove previous report
+                Helper.RemoveReport("Report3");
+                //
+                var school = new SchoolEntities();
+                var daily = new DailyEmailReport
+                {
+                    Time = DateTime.Now.ToShortTimeString(),
+                    Date = DateTime.Now.Date,
+                    Path = filePath + fileName,
+                    ReportName = "Report3",
+                    Sent = false
+                };
+                school.DailyEmailReports.Add(daily);
+                school.SaveChanges();
+            }
         }
     }
 }

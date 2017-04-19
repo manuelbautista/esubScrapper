@@ -10,6 +10,21 @@ namespace Dax.Scrapping.Appraisal.Core
 {
     public class ReportRexDownloadHandler : IDownloadHandler
     {
+        public string filePath
+        {
+            get
+            {
+                var filePath = @"C:\esubmitter\Reports\ReportRex\";
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
+                }
+                return filePath;
+            }
+        }
+
+        public string _fileName { get; set; }
+
         private bool FileExists(string fileName)
         {
             var school = new SchoolEntities();
@@ -17,11 +32,7 @@ namespace Dax.Scrapping.Appraisal.Core
         }
         public void OnBeforeDownload(IBrowser browser, DownloadItem downloadItem, IBeforeDownloadCallback callback)
         {
-            var filePath = @"C:\esubmitter\Reports\ReportRex\";
-            if (!Directory.Exists(filePath))
-            {
-                Directory.CreateDirectory(filePath);
-            }
+
             if (!callback.IsDisposed)
             {
                 var yesterday = DateTime.Now.Date.AddDays(-1);
@@ -29,25 +40,12 @@ namespace Dax.Scrapping.Appraisal.Core
                 string fileName = "Rex_StomesNC_";
 
                 downloadItem.SuggestedFileName = fileName + date + ".csv";
+                _fileName = downloadItem.SuggestedFileName;
 
                 using (callback)
                 {
-                    //Remove previous report
-                    Helper.RemoveReport("ReportRex");
                     //
                     callback.Continue(filePath + downloadItem.SuggestedFileName, showDialog: false);
-
-                    var school = new SchoolEntities();
-                    var daily = new DailyEmailReport
-                    {
-                        Time = DateTime.Now.ToShortTimeString(),
-                        Date = DateTime.Now.Date,
-                        Path = filePath + downloadItem.SuggestedFileName,
-                        ReportName = "ReportRex",
-                        Sent = false
-                    };
-                    school.DailyEmailReports.Add(daily);
-                    school.SaveChanges();
                 }
             }
         }
@@ -55,7 +53,23 @@ namespace Dax.Scrapping.Appraisal.Core
 
         public void OnDownloadUpdated(IBrowser browser, DownloadItem downloadItem, IDownloadItemCallback callback)
         {
-            //throw new NotImplementedException();
+            if (downloadItem.IsComplete)
+            {
+                //Remove previous report
+                Helper.RemoveReport("ReportRex");
+
+                var school = new SchoolEntities();
+                var daily = new DailyEmailReport
+                {
+                    Time = DateTime.Now.ToShortTimeString(),
+                    Date = DateTime.Now.Date,
+                    Path = filePath + _fileName,
+                    ReportName = "ReportRex",
+                    Sent = false
+                };
+                school.DailyEmailReports.Add(daily);
+                school.SaveChanges();
+            }
         }
     }
 }

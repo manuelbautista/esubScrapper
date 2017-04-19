@@ -20,5 +20,6 @@ namespace Dax.Scrapping.Appraisal
         public Nullable<bool> SendToCallCriteria { get; set; }
         public string who_submitted { get; set; }
         public int Id { get; set; }
+        public Nullable<bool> PushCallCriteriaError { get; set; }
     }
 }

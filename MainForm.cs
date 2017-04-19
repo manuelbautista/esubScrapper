@@ -89,7 +89,8 @@ namespace Dax.Scrapping.Appraisal
         private Panel panelReportNewCA;
         private Panel panelRex;
         public ChromiumWebBrowser reportQSCABrowser;
-      
+      public bool ExecuteCode = true;
+        private static System.Threading.Timer newTimer;
         public MainForm(bool autoStart = false)
         {
           this._AutoStart = autoStart;
@@ -108,7 +109,7 @@ namespace Dax.Scrapping.Appraisal
             MailRepository mail = new MailRepository("imap.secureserver.net", 143, false, "reports@statewideconsultants.com", "Educat!0n");
 
             string curpath = Directory.GetCurrentDirectory();
-            var mails = mail.GetUnreadMails("inbox").Where(a=>a.ReceivedDate.ToString("MM/dd/yyyy").Equals(DateTime.Now.ToString("MM/dd/yyyy")));
+            var mails = mail.GetAllMails("inbox").Where(a=>a.ReceivedDate.ToString("MM/dd/yyyy").Equals(DateTime.Now.ToString("MM/dd/yyyy")));
             
             try
             {
@@ -116,7 +117,7 @@ namespace Dax.Scrapping.Appraisal
                 {
                     if (email.Subject.Contains("Export Call Report"))
                     {
-                        var url = sep(email.BodyHtml.Text);
+                        var url = sep(email.BodyHtml.Text).Replace(@"\r\n","").Trim();
                         return url;
                     }
                 }
@@ -542,31 +543,41 @@ namespace Dax.Scrapping.Appraisal
 
     private void MainForm_Load(object sender, EventArgs e)
     {
-        this.LoadConfiguration();
-        this.InitializeBrouser();
-        var settings = new CefSettings();
-        settings.CefCommandLineArgs.Add("disable-web-security", "1");
-        double num = 0.0;
-        //
-        Cef.Initialize(settings);
+            this.LoadConfiguration();
+            this.InitializeBrouser();
+            var settings = new CefSettings();
+            settings.CefCommandLineArgs.Add("disable-web-security", "1");
+            ExecuteCode = true;
+            //
+            Cef.Initialize(settings);
 
-        //just execute the download and send file between 8 and 4
-        if (DateTime.Now.Hour >= 8 && DateTime.Now.Hour < 17 && DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
-        {
-            num = Convert.ToDouble(Helper.GetAppSettingAsString("Time1"));
-        }
-        else
-        {
-            num = Convert.ToDouble(Helper.GetAppSettingAsString("Time2"));
-        }
+            newTimer = new System.Threading.Timer(_ => OnCallBack(), null, 0, 230000);
+            this.aTimer.Elapsed += new ElapsedEventHandler(this.ATimer_Elapsed);
+            this.aTimer.Enabled = true;
 
-        this.aTimer.Elapsed += new ElapsedEventHandler(this.ATimer_Elapsed);
-        this.aTimer.Interval = num;
-        this.aTimer.Enabled = true;
-        this.Clear();
-        this.panelBrowser.Controls.Clear();
-        this.btnSearch_Click((object) null, (EventArgs) null);
+            Exec();
     }
+
+      private void Exec()
+      {
+            ExecuteCode = false;
+            double num = 0.0;
+            //just execute the download and send file between 8 and 4
+            if (DateTime.Now.Hour >= 8 && DateTime.Now.Hour < 20 && DateTime.Now.DayOfWeek != DayOfWeek.Sunday)
+            {
+                num = Convert.ToDouble(Helper.GetAppSettingAsString("Time1"));
+            }
+            else
+            {
+                num = Convert.ToDouble(Helper.GetAppSettingAsString("Time2"));
+            }
+
+            this.aTimer.Interval = num;
+            //this.Clear();
+            //this.panelBrowser.Controls.Clear();
+            this.btnSearch_Click((object)null, (EventArgs)null);
+            ExecuteCode = true;
+        }
     private bool SaveReport1TodayQSNC()
     {
             SchoolEntities school = new SchoolEntities();
@@ -641,16 +652,18 @@ namespace Dax.Scrapping.Appraisal
 
             if (RunReport1())
             {
-                //Send reports info
-                SaveReport1();
                 //Send Emails
                 SendReport1ToEmail("Export Call Report");
+                
+                //Send reports info
+                SaveReport1();
+
+                //Thread.Sleep(120000);
+
             }
             //just execute the download and send file between 8 and 4
             if (RunReport())
             {
-                //Send reports info
-                SaveReports();
                 //Send Emails
                 //SendReport1ToEmail("Export Call Report");
                 SendReport2ToEmail("MS CA Report");
@@ -663,13 +676,18 @@ namespace Dax.Scrapping.Appraisal
                 //Send Rex Reports
                 SendRexReportToEmail("Rex Report");
 
+                //Send reports info
+                SaveReports();
+
+                //Thread.Sleep(120000);
+
             }
         }
 
       private bool RunReport1()
       {
           bool send = false;
-          send = (DateTime.Now.Hour > 4 && DateTime.Now.Hour < 8 && DateTime.Now.DayOfWeek != DayOfWeek.Sunday);
+          send = (DateTime.Now.Hour > 4  && DateTime.Now.DayOfWeek != DayOfWeek.Sunday);
           if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
           {
               if (DateTime.Now.Hour > 7)
@@ -696,17 +714,15 @@ namespace Dax.Scrapping.Appraisal
       {
           if (RestarApp())
           {
-              //Send info to call criteria
-              SendCallCriteriaPush();
-              //
-              //Restart the application
-              Application.Restart();
+            if(ExecuteCode)
+                Exec();
+
           }
       }
 
       private bool RestarApp()
       {
-            bool send = (DateTime.Now.Hour > 4 && DateTime.Now.Hour < 20 && DateTime.Now.DayOfWeek != DayOfWeek.Sunday);
+            bool send = (DateTime.Now.Hour > 4 && DateTime.Now.Hour < 22 && DateTime.Now.DayOfWeek != DayOfWeek.Sunday);
             if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday)
             {
                 if (DateTime.Now.Hour > 2)
@@ -809,7 +825,7 @@ namespace Dax.Scrapping.Appraisal
         catch (Exception ex)
         {
             Helper.SaveErrorMessage(ex.Message);
-            Application.Restart();
+            //Application.Restart();
             //MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
@@ -827,7 +843,18 @@ namespace Dax.Scrapping.Appraisal
             return school.PushEsto(id) > 0;
         }
 
-      public bool MarkAsSentToCallCriteria(int schoolSubmittedId)
+        public bool MarkErrorToCallCriteria(int schoolSubmittedId)
+        {
+            SchoolEntities school = new SchoolEntities();
+            var data = school.Schools_Submitteds.FirstOrDefault(a => a.Id.Equals(schoolSubmittedId));
+            if (data == null) return false;
+
+            data.PushCallCriteriaError = true;
+            school.Schools_Submitteds.AddOrUpdate(data);
+
+            return school.SaveChanges() > 0;
+        }
+        public bool MarkAsSentToCallCriteria(int schoolSubmittedId)
       {
           SchoolEntities school = new SchoolEntities();
           var data = school.Schools_Submitteds.FirstOrDefault(a => a.Id.Equals(schoolSubmittedId));
@@ -837,34 +864,65 @@ namespace Dax.Scrapping.Appraisal
           school.Schools_Submitteds.AddOrUpdate(data);
 
           return school.SaveChanges() > 0;
-      } 
+      }
+
+        private void OnCallBack()
+        {
+            newTimer.Change(Timeout.Infinite, Timeout.Infinite); //stops the timer
+            if(RestarApp())
+                SendCallCriteriaPush();
+
+            newTimer.Change(0, 230000);  //restarts the timer
+        }
 
         /// <summary>
         /// Send info to call criteria
         /// </summary>
         public void SendCallCriteriaPush()
       {
-          SchoolEntities school = new SchoolEntities();
-          var minutes = 0;
-          var days = 0;
-           var dataList = school.View_SendToCallCriteria.ToList().Where(a => a.Date.HasValue && a.Date.Value.Date.Equals(DateTime.Now.Date)).ToList();
-          var actualHour = DateTime.Now.Hour;
-          foreach (var data in dataList)
+          var submitId = 0;
+          var error = false;
+          try
           {
-               var isTest = isTestUser(data.who_submitted);
-              if (data.Date != null)
-              {
-                  TimeSpan span = (DateTime.Now - data.Date.Value);
-                  minutes = span.Minutes;
-                  days = span.Days;
-              }
+              SchoolEntities school = new SchoolEntities();
+              var minutes = 0;
+              var days = 0;              
 
-                //Push to Call Criteria
-                if (!isTest && (minutes >= 15 || days > 0 || actualHour > 20) )
-                {
-                    var pushed = PushEsto(data.SubmitId);
-                    MarkAsSentToCallCriteria(data.Id);
-                }
+              var dataList =
+                  school.View_SendToCallCriteria.ToList()
+                      .Where(a => a.Date.HasValue && a.Date.Value.Date.Equals(DateTime.Now.Date))
+                      .ToList();
+              var actualHour = DateTime.Now.Hour;
+              foreach (var data in dataList)
+              {
+                  var isTest = isTestUser(data.who_submitted);
+                  if (data.Date != null)
+                  {
+                      TimeSpan span = (DateTime.Now - data.Date.Value);
+                      minutes = span.Minutes;
+                      days = span.Days;
+                  }
+
+                  error = data.PushCallCriteriaError.HasValue && data.PushCallCriteriaError.Value;
+
+                  if (!error)
+                  {
+                      //Push to Call Criteria
+                      if (!isTest && (minutes >= 15 || days > 0 || actualHour > 20))
+                      {
+                          submitId = data.Id;
+                          var pushed = PushEsto(data.SubmitId);
+                          MarkAsSentToCallCriteria(data.Id);
+                      }
+                  }
+              }
+          }
+          catch (Exception ex)
+          {
+                if(submitId > 0)
+                    MarkErrorToCallCriteria(submitId);
+
+                //newTimer.Change(0, 230000);
             }
       }
 
@@ -944,12 +1002,17 @@ namespace Dax.Scrapping.Appraisal
                 browserReportRex.RequestContext = new RequestContext(report2Setting);
                 browserReportRex.RequestContext.GetDefaultCookieManager(null).SetStoragePath(filePath + @"\ReportRexCookies", false);
                 browserReportRex.DownloadHandler = new ReportRexDownloadHandler();
-                this.panelRex.Controls.Clear();
-                this.panelRex.Controls.Add(browserReportRex);
+                this.Invoke((Action) (() =>
+                {
+                    this.panelRex.Controls.Clear();
+                    this.panelRex.Controls.Add(browserReportRex);
+                    ConsultTabControl.SelectedIndex = 7;
+                    Thread.Sleep(1000);
+                    ConsultTabControl.SelectedIndex = 0;
+                }));
+
                 browserReportRex.LoadingStateChanged += BrowserReportRex_LoadingStateChanged;
-                ConsultTabControl.SelectedIndex = 7;
-                Thread.Sleep(1000);
-                ConsultTabControl.SelectedIndex = 0;
+
             }
             if (SaveReportQSCA)
             {
@@ -981,12 +1044,16 @@ namespace Dax.Scrapping.Appraisal
             browserReportQSCA.RequestContext.GetDefaultCookieManager(null).SetStoragePath(filePath + @"\ReportQSCACookies", false);
 
             browserReportQSCA.DownloadHandler = new ReportQSCADownloadHandler(); //CAMBIAR
-            this.panelQSReportCA.Controls.Clear();
-            this.panelQSReportCA.Controls.Add(browserReportQSCA);
+            this.Invoke((Action) (() =>
+            {
+                this.panelQSReportCA.Controls.Clear();
+                this.panelQSReportCA.Controls.Add(browserReportQSCA);
+                ConsultTabControl.SelectedIndex = 5;
+                Thread.Sleep(1000);
+                ConsultTabControl.SelectedIndex = 0;
+            }));
             browserReportQSCA.LoadingStateChanged += BrowserReportQSCA_LoadingStateChanged;
-            ConsultTabControl.SelectedIndex = 5;
-            Thread.Sleep(1000);
-            ConsultTabControl.SelectedIndex = 0;
+
         }
             #region save report QS NC
             if (SaveReportQSNC)
@@ -1019,12 +1086,16 @@ namespace Dax.Scrapping.Appraisal
             browserReportQSNC.RequestContext.GetDefaultCookieManager(null).SetStoragePath(filePath + @"\ReportQSNCCookies", false);
 
             browserReportQSNC.DownloadHandler = new ReportQSNCDownloadHandler(); //CAMBIAR
-            this.panelQSReportNC.Controls.Clear();
-            this.panelQSReportNC.Controls.Add(browserReportQSNC);
+            this.Invoke((Action) (() =>
+            {
+                this.panelQSReportNC.Controls.Clear();
+                this.panelQSReportNC.Controls.Add(browserReportQSNC);
+                ConsultTabControl.SelectedIndex = 6;
+                Thread.Sleep(1000);
+                ConsultTabControl.SelectedIndex = 0;
+            }));
             browserReportQSNC.LoadingStateChanged += BrowserReportQSNC_LoadingStateChanged;
-            ConsultTabControl.SelectedIndex = 6;
-            Thread.Sleep(1000);
-            ConsultTabControl.SelectedIndex = 0;
+
         }
             #endregion
             if (saveReportNewNC)
@@ -1048,12 +1119,16 @@ namespace Dax.Scrapping.Appraisal
                 browserReport2.RequestContext.GetDefaultCookieManager(null).SetStoragePath(filePath + @"\ReportNewNCCookies", false);
 
                 browserReport2.DownloadHandler = new ReportNewNCDownloadHandler();
-                this.panelReportNewNC.Controls.Clear();
-                this.panelReportNewNC.Controls.Add(browserReport2);
+                this.Invoke((Action) (() =>
+                {
+                    this.panelReportNewNC.Controls.Clear();
+                    this.panelReportNewNC.Controls.Add(browserReport2);
+                    ConsultTabControl.SelectedIndex = 8;
+                    Thread.Sleep(1000);
+                    ConsultTabControl.SelectedIndex = 0;
+                }));             
                 browserReport2.LoadingStateChanged += BrowserReportNewNC_LoadingStateChanged;
-                ConsultTabControl.SelectedIndex = 8;
-                Thread.Sleep(1000);
-                ConsultTabControl.SelectedIndex = 0;
+
             }
             if (saveReportNewCA)
             {
@@ -1076,12 +1151,16 @@ namespace Dax.Scrapping.Appraisal
                 browserReport2.RequestContext.GetDefaultCookieManager(null).SetStoragePath(filePath + @"\ReportNewCACookies", false);
 
                 browserReport2.DownloadHandler = new ReportNewCADownloadHandler();
-                this.panelReportNewCA.Controls.Clear();
-                this.panelReportNewCA.Controls.Add(browserReport2);
+                this.Invoke((Action) (() =>
+                {
+                    this.panelReportNewCA.Controls.Clear();
+                    this.panelReportNewCA.Controls.Add(browserReport2);
+                    ConsultTabControl.SelectedIndex = 9;
+                    Thread.Sleep(1000);
+                    ConsultTabControl.SelectedIndex = 0;
+                }));
                 browserReport2.LoadingStateChanged += BrowserReportNewCA_LoadingStateChanged;
-                ConsultTabControl.SelectedIndex = 9;
-                Thread.Sleep(1000);
-                ConsultTabControl.SelectedIndex = 0;
+
             }
         if (saveReport2)
         {
@@ -1104,12 +1183,16 @@ namespace Dax.Scrapping.Appraisal
             browserReport2.RequestContext.GetDefaultCookieManager(null).SetStoragePath(filePath + @"\Report2Cookies", false);
 
             browserReport2.DownloadHandler = new Report2DownloadHandler();
-            this.panelReport2.Controls.Clear();
-            this.panelReport2.Controls.Add(browserReport2);
+            this.Invoke((Action) (() =>
+            {
+                this.panelReport2.Controls.Clear();
+                this.panelReport2.Controls.Add(browserReport2);
+                ConsultTabControl.SelectedIndex = 3;
+                Thread.Sleep(1000);
+                ConsultTabControl.SelectedIndex = 0;
+            }));
             browserReport2.LoadingStateChanged += BrowserReport2_LoadingStateChanged;
-            ConsultTabControl.SelectedIndex = 3;
-            Thread.Sleep(1000);
-            ConsultTabControl.SelectedIndex = 0;
+
         }
         if (saveReport3)
         {
@@ -1131,12 +1214,15 @@ namespace Dax.Scrapping.Appraisal
             browserReport3.RequestContext.GetDefaultCookieManager(null).SetStoragePath(filePath + @"\Report3Cookies", false);
 
             browserReport3.DownloadHandler = new Report3DownloadHandler();
-            this.panelReport3.Controls.Clear();
-            this.panelReport3.Controls.Add(browserReport3);
+            this.Invoke((Action) (() =>
+            {
+                this.panelReport3.Controls.Clear();
+                this.panelReport3.Controls.Add(browserReport3);
+                ConsultTabControl.SelectedIndex = 4;
+                Thread.Sleep(1000);
+                ConsultTabControl.SelectedIndex = 0;
+            }));
             browserReport3.LoadingStateChanged += BrowserReport3_LoadingStateChanged;
-            ConsultTabControl.SelectedIndex = 4;
-            Thread.Sleep(1000);
-            ConsultTabControl.SelectedIndex = 0;
         }
     }
 
