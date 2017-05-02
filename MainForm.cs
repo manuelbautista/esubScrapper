@@ -106,7 +106,9 @@ namespace Dax.Scrapping.Appraisal
 
          private string GetReport1LinkFromEmail()
       {
-            MailRepository mail = new MailRepository("imap.secureserver.net", 143, false, "reports@statewideconsultants.com", "Educat!0n");
+            //MailRepository mail = new MailRepository("imap.secureserver.net", 143, false, "reports@statewideconsultants.com", "Educat!0n");
+
+            MailRepository mail = new MailRepository("imap.gmail.com", 993, true, "swcreporting@gmail.com", "1525arthur");
 
             string curpath = Directory.GetCurrentDirectory();
             var mails = mail.GetAllMails("inbox").Where(a=>a.ReceivedDate.ToString("MM/dd/yyyy").Equals(DateTime.Now.ToString("MM/dd/yyyy")));
@@ -164,21 +166,17 @@ namespace Dax.Scrapping.Appraisal
                 return;
             try
             {
-                //MailMessage mail = new MailMessage();
-                MailMessage mail = new MailMessage("reports@statewideconsultants.com",
-                    "reports@statewideconsultants.com");
+                MailMessage mail = new MailMessage("swcreporting@gmail.com", "swcreporting@gmail.com");
                 System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
-                client.Host = "smtpout.secureserver.net";
+                client.Host = "smtp.gmail.com";
 
-                client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
+                client.Port = 587; //Tried 80, 3535, 25, 465 (SSL)
                 client.UseDefaultCredentials = false;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.EnableSsl = false;
-                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential("swcreporting@gmail.com", "1525arthur");
                 mail.IsBodyHtml = true;
 
-                //mail.From = new MailAddress("reports@statewideconsultants.com");
-                //mail.To.Add("b0hcoder@gmail.com");
                 mail.Subject = subject;
                 mail.Body = "mail with attachment";
                 mail.IsBodyHtml = true;
@@ -212,21 +210,17 @@ namespace Dax.Scrapping.Appraisal
                 return;
             try
             {
-                //MailMessage mail = new MailMessage();
-                MailMessage mail = new MailMessage("reports@statewideconsultants.com",
-                    "reports@statewideconsultants.com");
+                MailMessage mail = new MailMessage("swcreporting@gmail.com", "swcreporting@gmail.com");
                 System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
-                client.Host = "smtpout.secureserver.net";
+                client.Host = "smtp.gmail.com";
 
-                client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
+                client.Port = 587; //Tried 80, 3535, 25, 465 (SSL)
                 client.UseDefaultCredentials = false;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.EnableSsl = false;
-                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential("swcreporting@gmail.com", "1525arthur");
                 mail.IsBodyHtml = true;
 
-                //mail.From = new MailAddress("reports@statewideconsultants.com");
-                //mail.To.Add("b0hcoder@gmail.com");
                 mail.Subject = subject;
                 mail.Body = "mail with attachment";
                 mail.IsBodyHtml = true;
@@ -259,21 +253,17 @@ namespace Dax.Scrapping.Appraisal
                 return;
             try
             {
-                //MailMessage mail = new MailMessage();
-                MailMessage mail = new MailMessage("reports@statewideconsultants.com",
-                    "reports@statewideconsultants.com");
+                MailMessage mail = new MailMessage("swcreporting@gmail.com", "swcreporting@gmail.com");
                 System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
-                client.Host = "smtpout.secureserver.net";
+                client.Host = "smtp.gmail.com";
 
-                client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
+                client.Port = 587; //Tried 80, 3535, 25, 465 (SSL)
                 client.UseDefaultCredentials = false;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.EnableSsl = false;
-                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential("swcreporting@gmail.com", "1525arthur");
                 mail.IsBodyHtml = true;
 
-                //mail.From = new MailAddress("reports@statewideconsultants.com");
-                //mail.To.Add("b0hcoder@gmail.com");
                 mail.Subject = subject;
                 mail.Body = "mail with attachment";
                 mail.IsBodyHtml = true;
@@ -308,21 +298,19 @@ namespace Dax.Scrapping.Appraisal
               return;
           try
           {
-              //MailMessage mail = new MailMessage();
-              MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
-              System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
-              client.Host = "smtpout.secureserver.net";
 
-              client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
-              client.UseDefaultCredentials = false;
-              client.DeliveryMethod = SmtpDeliveryMethod.Network;
-              client.EnableSsl = false;
-              client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
-              mail.IsBodyHtml = true;
+                MailMessage mail = new MailMessage("swcreporting@gmail.com", "swcreporting@gmail.com");
+                System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
+                client.Host = "smtp.gmail.com";
 
-              //mail.From = new MailAddress("reports@statewideconsultants.com");
-              //mail.To.Add("b0hcoder@gmail.com");
-              mail.Subject = subject;
+                client.Port = 587; //Tried 80, 3535, 25, 465 (SSL)
+                client.UseDefaultCredentials = false;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential("swcreporting@gmail.com", "1525arthur");
+                mail.IsBodyHtml = true;
+
+                mail.Subject = subject;
               mail.Body = "mail with attachment";
               mail.IsBodyHtml = true;
               System.Net.Mail.Attachment attachment;
@@ -359,21 +347,18 @@ namespace Dax.Scrapping.Appraisal
                 return;
             try
           {
-              //MailMessage mail = new MailMessage();
-              MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
-              System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
-              client.Host = "smtpout.secureserver.net";
+                MailMessage mail = new MailMessage("swcreporting@gmail.com", "swcreporting@gmail.com");
+                System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
+                client.Host = "smtp.gmail.com";
 
-              client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
-              client.UseDefaultCredentials = false;
-              client.DeliveryMethod = SmtpDeliveryMethod.Network;
-              client.EnableSsl = false;
-              client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
-              mail.IsBodyHtml = true;
+                client.Port = 587; //Tried 80, 3535, 25, 465 (SSL)
+                client.UseDefaultCredentials = false;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential("swcreporting@gmail.com", "1525arthur");
+                mail.IsBodyHtml = true;
 
-              //mail.From = new MailAddress("reports@statewideconsultants.com");
-              //mail.To.Add("b0hcoder@gmail.com");
-              mail.Subject = subject;
+                mail.Subject = subject;
               mail.Body = "mail with attachment";
               mail.IsBodyHtml = true;
               System.Net.Mail.Attachment attachment;
@@ -408,21 +393,17 @@ namespace Dax.Scrapping.Appraisal
                 return;
             try
             {
-                //MailMessage mail = new MailMessage();
-                MailMessage mail = new MailMessage("reports@statewideconsultants.com",
-                    "reports@statewideconsultants.com");
+                MailMessage mail = new MailMessage("swcreporting@gmail.com", "swcreporting@gmail.com");
                 System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
-                client.Host = "smtpout.secureserver.net";
+                client.Host = "smtp.gmail.com";
 
-                client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
+                client.Port = 587; //Tried 80, 3535, 25, 465 (SSL)
                 client.UseDefaultCredentials = false;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.EnableSsl = false;
-                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential("swcreporting@gmail.com", "1525arthur");
                 mail.IsBodyHtml = true;
 
-                //mail.From = new MailAddress("reports@statewideconsultants.com");
-                //mail.To.Add("b0hcoder@gmail.com");
                 mail.Subject = subject;
                 mail.Body = "mail with attachment";
                 mail.IsBodyHtml = true;
@@ -457,21 +438,17 @@ namespace Dax.Scrapping.Appraisal
                 return;
             try
             {
-                //MailMessage mail = new MailMessage();
-                MailMessage mail = new MailMessage("reports@statewideconsultants.com",
-                    "reports@statewideconsultants.com");
+                MailMessage mail = new MailMessage("swcreporting@gmail.com", "swcreporting@gmail.com");
                 System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
-                client.Host = "smtpout.secureserver.net";
+                client.Host = "smtp.gmail.com";
 
-                client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
+                client.Port = 587; //Tried 80, 3535, 25, 465 (SSL)
                 client.UseDefaultCredentials = false;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.EnableSsl = false;
-                client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential("swcreporting@gmail.com", "1525arthur");
                 mail.IsBodyHtml = true;
 
-                //mail.From = new MailAddress("reports@statewideconsultants.com");
-                //mail.To.Add("b0hcoder@gmail.com");
                 mail.Subject = subject;
                 mail.Body = "mail with attachment";
                 mail.IsBodyHtml = true;
@@ -506,20 +483,28 @@ namespace Dax.Scrapping.Appraisal
 
             try
         {
-            //MailMessage mail = new MailMessage();
-            MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
-            System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
-            client.Host = "smtpout.secureserver.net";
+                //MailMessage mail = new MailMessage("reports@statewideconsultants.com", "reports@statewideconsultants.com");
+                //System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
+                //client.Host = "smtpout.secureserver.net";
 
-            client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
+                //client.Port = 3535; //Tried 80, 3535, 25, 465 (SSL)
+                //client.UseDefaultCredentials = false;
+                //client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                //client.EnableSsl = false;
+                //client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
+                //mail.IsBodyHtml = true;
+
+            MailMessage mail = new MailMessage("swcreporting@gmail.com", "swcreporting@gmail.com");
+            System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
+            client.Host = "smtp.gmail.com";
+
+            client.Port = 587; //Tried 80, 3535, 25, 465 (SSL)
             client.UseDefaultCredentials = false;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.EnableSsl = false;
-            client.Credentials = new NetworkCredential("reports@statewideconsultants.com", "Educat!0n");
+            client.EnableSsl = true;
+            client.Credentials = new NetworkCredential("swcreporting@gmail.com", "1525arthur");
             mail.IsBodyHtml = true;
 
-            //mail.From = new MailAddress("reports@statewideconsultants.com");
-            //mail.To.Add("b0hcoder@gmail.com");
             mail.Subject = subject;
             mail.Body = "mail with attachment";
             mail.IsBodyHtml = true;
